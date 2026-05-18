@@ -133,6 +133,14 @@ helm install matrixhub oci://ghcr.io/matrixhub-ai/matrixhub \
 - [Documentation site](https://matrixhub.ai)
 - [Development guide](docs/development.md)
 
+## Project governance
+
+- [Maintainers](MAINTAINERS.md)
+- [Governance](GOVERNANCE.md)
+- [Security policy](SECURITY.md)
+- [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+
 ## Community, discussion, contribution, and support
 
 Slack is our primary channel for community discussion, contribution coordination, and support. You can reach the maintainers and community at:
