@@ -124,7 +124,8 @@
   "validation": {
     "nameRequired": "请输入项目名称",
     "nameMinLength": "项目名称至少需要 2 个字符",
-    "nameFormat": "项目名称只能包含小写字母、数字和连字符，且必须以字母或数字开头和结尾",
+    "nameFormat": "项目名称只能包含字母、数字和连字符，且必须以字母或数字开头和结尾",
+    "nameDistinctChars": "项目名称至少需要包含 2 个不同字符",
     "organizationRequired": "开启代理后请填写 Organization 或用户名",
     "registryRequired": "开启代理后请选择仓库"
   }
