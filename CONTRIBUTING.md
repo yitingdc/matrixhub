@@ -7,7 +7,7 @@ _As contributors and maintainers of this project, and in the interest of fosteri
 ## Before You Start
 
 - Read the [Code of Conduct](CODE_OF_CONDUCT.md).
-- Check open [issues](https://github.com/matrixhub/matrixhub/issues) and [pull requests](https://github.com/matrixhub/matrixhub/pulls) to avoid duplicate work.
+- Check open [issues](https://github.com/matrixhub-ai/matrixhub/issues) and [pull requests](https://github.com/matrixhub-ai/matrixhub/pulls) to avoid duplicate work.
 
 ## Local Development
 

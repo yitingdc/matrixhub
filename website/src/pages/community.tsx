@@ -9,7 +9,7 @@ const sections = [
     description:
       'Star and follow the MatrixHub repository for updates, issues, and releases.',
     linkText: 'Visit Repository →',
-    href: 'https://github.com/matrixhub',
+    href: 'https://github.com/matrixhub-ai',
   },
   {
     emoji: '🤝',
