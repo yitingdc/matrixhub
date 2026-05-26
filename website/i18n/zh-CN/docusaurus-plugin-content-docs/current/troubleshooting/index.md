@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# 故障排查
+# Troubleshooting
 
-常见问题、FAQ 及 MatrixHub 诊断流程。
+Common issues, FAQ, and diagnostic procedures for MatrixHub.

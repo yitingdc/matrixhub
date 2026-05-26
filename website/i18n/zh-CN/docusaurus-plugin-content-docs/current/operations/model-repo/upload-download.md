@@ -2,87 +2,84 @@
 sidebar_position: 2
 ---
 
-# 命令行上传和下载
+# Command Line Upload and Download
 
-## 前提条件
+## Prerequisites
 
-- 已有可登录 MatrixHub 的账号
-- 已加入目标项目并具备模型仓库读写权限（管理员权限，开发权限）
-- 本地已安装 Hugging Face CLI（`hf` 命令可用）
-- 网络可访问 MatrixHub 服务地址
+- A valid MatrixHub account.
+- Joined the target project with read/write permissions for the model repository (Admin or Developer permissions).
+- Hugging Face CLI installed locally (`hf` command available).
+- Network access to the MatrixHub service endpoint.
 
-## 上传模型
+## Uploading Models
 
-1. 登录平台后，进入 **项目管理** ，选择目标项目。
-1. 打开 **模型仓库** 标签页，点击 **创建模型** 。
+1. Log in to the platform, go to **Project Management**, and select the target project.
+1. Open the **Model Repository** tab and click **Create Model**.
 
-    ![创建模型](./images/create-model.jpg)
+    ![Create Model](./images/create-model.jpg)
 
-1. 填写模型名称并确认创建，进入模型详情页。
+1. Fill in the model name, confirm creation, and enter the model details page.
 
-    ![创建成功](./images/after-create-model.jpg)
+    ![After Create Model](./images/after-create-model.jpg)
 
-1. 在本地终端配置服务地址。
+1. Configure the service endpoint in your local terminal.
 
     ```bash
     export HF_ENDPOINT="https://<your-matrixhub-endpoint>"
     ```
 
-1. 使用 `hf upload` 上传本地模型目录。
+1. Use `hf upload` to upload the local model directory.
 
     ```bash
     hf upload <project-name>/<model-name> ./<local-model-dir>
     ```
 
-1. 返回模型详情页刷新，确认文件列表已出现上传文件。
+1. Return to the model details page and refresh to confirm the uploaded files appear in the list.
 
-    ![上传成功](./images/after-upload.jpg)
-
+    ![After Upload](./images/after-upload.jpg)
 
 :::note
 
-- 若提示模型名重复，请更换模型名称后重新创建。
-- 首次上传大模型可能耗时较长，请等待命令执行完成。
+- If the model name is already taken, please choose a different name and try again.
+- Uploading large models for the first time may take a while; please wait for the command to complete.
 
 :::
 
-## 下载模型
+## Downloading Models
 
-1. 进入目标模型详情页，点击 **下载模型** 。
-1. 在弹窗中复制下载命令，在本地终端执行。
+1. Enter the target model details page and click **Download Model**.
+1. Copy the download command from the popup and execute it in your local terminal.
 
     ```bash
     export HF_ENDPOINT="https://<your-matrixhub-endpoint>"
     hf download <project-name>/<model-name>
     ```
 
-1. 命令执行完成后，终端会输出下载目录路径。
-1. 打开本地下载目录，确认模型文件完整可用。
+1. After the command completes, the terminal will output the download directory path.
+1. Open the local download directory and verify that the model files are complete and usable.
 
-## 代理项目（Proxy）上传和下载
+## Proxy Project Upload and Download
 
-1. 在平台先创建一个代理项目（例如 `proxy-demo` ）。
-
-1. 在代理项目中创建模型后，即可通过命令行对代理站点执行上传和下载。
-
+1. Create a proxy project first (e.g., `proxy-demo`).
+1. After creating a model in the proxy project, you can perform uploads and downloads via the command line against the proxy site.
 
     ```bash
     export HF_ENDPOINT="https://<your-matrixhub-endpoint>"
     ```
 
-1. 下载代理项目中的模型（示例）。
+1. Download a model from the proxy project (example).
 
     ```bash
     hf download proxy-project/Qwen3-ASR-0.6B
     ```
 
-1. 从映射到 Hugging Face 组织（如 `prajjwal1` ）的代理项目下载模型（示例）。
+1. Download a model from a proxy project mapped to a Hugging Face organization (e.g., `prajjwal1`) (example).
 
     ```bash
     hf download prajjwal1/bert-tiny
     ```
 
-1. 上传本地模型到代理项目（示例）。
+1. Upload a local model to the proxy project (example).
 
     ```bash
     hf upload proxy-project/tiny-model ./<local-model-dir>
@@ -90,27 +87,30 @@ sidebar_position: 2
 
 :::note
 
-- 代理项目创建完成后，可使用 `hf download` 和 `hf upload` 访问代理站点模型仓库。
-- `hf upload` 需要同时提供远端仓库和本地路径：`hf upload <project>/<model> <local_path>` 。
+- Once the proxy project is created, you can access proxy site model repositories using `hf download` and `hf upload`.
+- `hf upload` requires both the remote repository and the local path: `hf upload <project>/<model> <local_path>`.
 
 :::
 
-##模型文件
-    ![模型文件界面](./images/model-file.png)
-### 下载单个模型文件
+## Model Files
 
-1. 进入模型详情页，切换到 **模型文件** 。
-1. 在目标文件所在行点击 **下载** 。
-1. 浏览器完成下载后，打开文件核对内容。
+    ![Model Files Interface](./images/model-file.png)
 
-### 文件检索与浏览
+### Downloading Single Model Files
 
-1. 在 **模型文件** 页使用搜索框输入文件名关键字（如 `.git`、`tokenizer`）。
-1. 观察列表过滤结果，确认返回文件符合预期。
-1. 如文件较多，点击 **加载更多** 查看完整列表。
+1. Enter the model details page and switch to the **Model Files** tab.
+1. Click **Download** on the target file's row.
+1. After the browser completes the download, open the file to verify the content.
 
-### 版本分支切换
+### File Search and Browsing
 
-1. 进入模型详情页的 **模型文件** 页面。
-1. 在分支选择器中选择目标分支（如 `main`、`test`）。
-1. 核对分支切换后的文件列表是否与该分支内容一致。
+1. Use the search box in the **Model Files** page to enter keywords (e.g., `.git`, `tokenizer`).
+1. Observe the filtered results to ensure the returned files match expectations.
+1. If there are many files, click **Load More** to view the full list.
+
+### Branch/Version Switching
+
+1. Enter the **Model Files** page of the model details.
+1. Select the target branch (e.g., `main`, `test`) in the branch selector.
+1. Verify that the file list after switching matches the content of that branch.
+

@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# 安装部署
+# Installation
 
-使用 Docker Compose、Helm 或 Kubernetes 在生产环境中部署 MatrixHub。
+Deploy MatrixHub in production using Docker Compose, Helm, or Kubernetes.

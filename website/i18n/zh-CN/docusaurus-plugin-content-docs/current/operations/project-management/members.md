@@ -2,47 +2,47 @@
 sidebar_position: 2
 ---
 
-# 项目成员
+# Project Members
 
-## 前提条件
+## Prerequisites
 
-- 当前账号为项目 **管理员** 或平台 **管理员**
-- 目标用户已在平台内创建账号
+- The current account is a project **Admin** or platform **Admin**.
+- The target user has an account created on the platform.
 
-## 操作步骤
+## Steps
 
-1. 登录 MatrixHub，进入 **项目管理** ，选择目标项目后点击 **项目成员** 页签。
+1. Log in to MatrixHub, go to **Project Management**, select the target project, and click the **Project Members** tab.
 
-    ![用户管理总览](./images/members-overview.jpg)
+    ![Members Overview](./images/members-overview.jpg)
 
-1. 点击 **添加成员** ，在弹窗中选择成员类型、用户和权限类型后点击 **确定** 。
+1. Click **Add Member**, select the member type, user, and permission type in the popup, then click **Confirm**.
 
-    ![添加成员](./images/members-add.jpg)
+    ![Add Member](./images/members-add.jpg)
 
-1. 在成员列表中找到目标用户，点击 **编辑权限** ，选择新的权限类型并确认。
+1. Locate the target user in the member list, click **Edit Permissions**, select a new permission type, and confirm.
 
-    ![编辑权限](./images/members-edit.jpg)
+    ![Edit Member](./images/members-edit.jpg)
 
-## 配置参数说明
+## Configuration Parameters
 
-| 参数 | 说明 |
-|------|------|
-| 成员类型 | 当前支持选择 **用户** |
-| 用户 | 需要加入项目的账号 |
-| 权限类型 | **管理员** ：可管理成员并维护项目资源；<br/>**开发者** ：可上传、下载、删除模型和数据集；<br/>**只读** ：仅可查看并下载模型和数据集 |
+| Parameter | Description |
+|-----------|-------------|
+| Member Type | Currently supports selecting **User**. |
+| User | The account to be added to the project. |
+| Permission Type | **Admin**: Can manage members and maintain project resources;<br/>**Developer**: Can upload, download, and delete models and datasets;<br/>**Viewer**: Can only view and download models and datasets. |
 
-## 角色权限说明
+## Role Permissions
 
-| 角色 | 菜单权限 | 核心功能权限 | 特殊说明 |
-|------|------|------|------|
-| 平台管理员 | 可查看所有菜单 | 可使用平台全部功能 | 平台最高权限 |
-| 项目管理员 | 无平台设置菜单 | 添加/编辑/移除成员，上传/下载/删除模型和数据集，删除项目 | 不能将自己从当前项目移除 |
-| 项目开发者 | 无平台设置菜单 | 查看成员，上传/下载/删除模型和数据集 | 无成员管理和项目删除权限 |
-| 项目只读 | 无平台设置菜单 | 查看成员，下载模型和数据集 | 无上传、删除和成员管理权限 |
-| 普通用户（非项目成员） | 无平台设置菜单 | 可查看公开项目的模型/数据集并下载 | 私有项目默认不可见 |
+| Role | Menu Permissions | Core Function Permissions | Special Notes |
+|------|------------------|---------------------------|---------------|
+| Platform Admin | Can view all menus | Can use all platform functions | Highest platform permission |
+| Project Admin | No platform settings menu | Add/edit/remove members, upload/download/delete models and datasets, delete project | Cannot remove themselves from the current project |
+| Project Developer | No platform settings menu | View members, upload/download/delete models and datasets | No member management or project deletion permissions |
+| Project Viewer | No platform settings menu | View members, download models and datasets | No upload, delete, or member management permissions |
+| Regular User (Non-member) | No platform settings menu | Can view and download models/datasets of public projects | Private projects are hidden by default |
 
-## 可见性补充
+## Visibility Supplement
 
-- 只有项目 **管理员** 和平台 **管理员** 可以修改项目设置
-- 项目 **开发者** 和 **只读** 角色可查看设置项但不能修改
-- 非项目成员默认不能看到该项目内容（公开资源除外）
+- Only project **Admins** and platform **Admins** can modify project settings.
+- Project **Developers** and **Viewers** can view settings but cannot modify them.
+- Non-members cannot see the project content by default (except for public resources).

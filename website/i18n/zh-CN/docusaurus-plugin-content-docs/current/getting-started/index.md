@@ -2,30 +2,30 @@
 sidebar_position: 1
 ---
 
-# 快速开始
+# Getting Started
 
-欢迎使用 MatrixHub！本指南将帮助您快速启动并运行。
+Welcome to MatrixHub! This guide will help you get up and running quickly.
 
-## 使用 Docker 快速部署
+## Quick Start with Docker
 
-使用 Docker Compose 在几分钟内本地部署 MatrixHub：
+Deploy MatrixHub locally in minutes using Docker Compose:
 
 ```bash
 curl -fsSL https://bit.ly/4qqSZIG | docker compose -f - up -d
 ```
 
-## 配置 HF Endpoint
+## Configure HF Endpoint
 
-将您的 Hugging Face 工具指向 MatrixHub 实例：
+Point your Hugging Face tools to your MatrixHub instance:
 
 ```bash
 export HF_ENDPOINT=https://your-matrixhub-instance
 ```
 
-之后，您可以继续使用现有的工作流 — `huggingface_hub`、`transformers` 或 `vllm` — 无需修改任何代码。
+Then use your existing workflows — `huggingface_hub`, `transformers`, or `vllm` — without any code changes.
 
-## 下一步
+## Next Steps
 
-- 了解 MatrixHub 的[核心概念](/docs/concepts)
-- 浏览 vLLM 和 SGLang 的[集成指南](/docs/integrations)
-- 为您的团队设置[访问控制](/docs/operations/project-management/members)
+- Learn about [core concepts](/docs/concepts) behind MatrixHub
+- Explore [integration guides](/docs/integrations) for vLLM and SGLang
+- Set up [access control](/docs/operations/project-management/members) for your team

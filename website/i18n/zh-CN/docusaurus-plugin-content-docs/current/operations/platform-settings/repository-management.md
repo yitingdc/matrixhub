@@ -2,44 +2,44 @@
 sidebar_position: 2
 ---
 
-# 仓库管理
+# Repository Management
 
-仓库管理用于配置平台访问外部模型源的连接信息（如 Hugging Face、ModelScope 或企业内部源）。这里创建的仓库是 **上游数据源连接器** ，会在 **远程同步** 中作为 **源仓库** 被选择。
+Repository Management is used to configure the platform's connection information for accessing external model sources (such as Hugging Face, ModelScope, or enterprise internal sources). The repository created here serves as an **upstream data source connector**, which will be selected as the **Source Repository** in **Remote Synchronization**.
 
-## 前提条件
+## Prerequisites
 
-- **权限:** 仅 **平台管理员** 可创建与管理仓库配置。
-- **网络连通:** MatrixHub 所在环境可访问目标 URL（如公网源或内网镜像）。
-- **凭证准备:** 若需访问私有资源，需提前准备账号密码。
+- **Permissions:** Only **Platform Admins** can create and manage repository configurations.
+- **Network Connectivity:** The environment where MatrixHub is deployed must have access to the target URL (e.g., public sources or internal mirrors).
+- **Credentials:** If accessing private resources is required, prepare the account password or token in advance.
 
-## 操作步骤
+## Steps
 
-1. 使用管理员账号登录 MatrixHub，进入 **平台管理**（或 **Admin** 下拉中的 **平台设置**），打开 **仓库管理** 页面。
+1. Log in to MatrixHub with an admin account, go to **Platform Management** in the navigation (or **Platform Settings** under the **Admin** dropdown), and open the **Repository Management** page.
 
-    ![仓库管理列表](./images/repo-overview.jpg)
+    ![Repository Overview](./images/repo-overview.jpg)
 
-1. 点击 **创建** ，在弹窗中选择提供者并填写仓库配置。
+1. Click **Create**, select the provider in the popup, and fill in the repository configuration.
 
-    ![创建仓库](./images/repo-create.jpg)
+    ![Create Repository](./images/repo-create.jpg)
 
-1. 按实际环境填写 **仓库名称** 、 **目标 URL** 、 **认证信息** 、 **证书校验** 等字段（详见下文 **配置参数说明**）。
+1. Fill in fields such as **Repository Name**, **Target URL**, **Authentication Information**, and **Certificate Verification** according to your actual environment (see the **Configuration Parameters** below for details).
 
-1. 点击 **确定** 完成创建。创建后可在列表中进行 **编辑** 或 **删除** ；已创建的仓库可在 **远程同步** 页面作为 **源仓库** 使用。
+1. Click **Confirm** to complete the creation. After creation, you can **Edit** or **Delete** the repository in the list; created repositories can be used as the **Source Repository** on the **Remote Synchronization** page.
 
-## 配置参数说明
+## Configuration Parameters
 
-| 参数 | 说明 |
-|------|------|
-| 提供者（Provider） | 上游协议或平台类型，例如 **Hugging Face** 、 **ModelScope** 或其他受支持源。 |
-| 仓库名称（Name） | 当前连接配置的显示名称，建议使用可识别别名（如 `HF-Official`、`HF-Mirror`）。 |
-| 目标 URL（Target URL） | 上游服务入口地址。示例：`https://huggingface.co`、`https://hf-mirror.com`。 |
-| 用户名 | 访问上游私有资源时使用的账号标识；公有资源场景可按界面要求留空。 |
-| 密码 / Token | 对应用户名的密码或访问令牌。Hugging Face 场景下通常填写 Access Token。 |
-| 验证远程证书 | 勾选后校验远程 TLS 证书。若远程使用自签名或非受信证书，可按环境策略取消勾选。 |
+| Parameter | Description |
+|-----------|-------------|
+| Provider | The upstream protocol or platform type, such as **Hugging Face**, **ModelScope**, or other supported sources. |
+| Name | The display name of the current connection configuration, an identifiable alias is recommended (e.g., `HF-Official`, `HF-Mirror`). |
+| Target URL | The entry address of the upstream service. Example: `https://huggingface.co`, `https://hf-mirror.com`. |
+| Username | The account identifier used to access upstream private resources; can be left blank for public resources depending on the interface requirements. |
+| Password / Token | The password or access token corresponding to the username. In the Hugging Face scenario, you usually enter the Access Token here. |
+| Verify Remote Certificate | If checked, it verifies the remote TLS certificate. If the remote source uses a self-signed or untrusted certificate, you can uncheck it depending on your environment's policy. |
 
 :::note
 
-- “仓库管理”中的仓库不是某个具体模型或数据集地址，而是一个可复用的上游连接配置。
-- 具体同步哪些模型/数据集，应在 **远程同步** 中通过资源名称与类型等规则定义。
+- The "repository" in "Repository Management" is not a specific model or dataset address, but a reusable upstream connection configuration.
+- To specify exactly which models/datasets to synchronize, you should define rules via resource names and types in **Remote Synchronization**.
 
 :::

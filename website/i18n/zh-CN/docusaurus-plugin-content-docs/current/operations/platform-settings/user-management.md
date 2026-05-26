@@ -1,39 +1,41 @@
 ---
 sidebar_position: 1
 ---
-# 用户管理
 
-仅平台管理员可访问和操作用户管理功能。
+# User Management
 
-## 前提条件
+Only platform administrators can access and operate the user management functions.
 
-- 已使用平台管理员账号登录 MatrixHub。
+## Prerequisites
 
-## 用户列表概览
+- Logged in to MatrixHub with a platform admin account.
 
-用户管理页面包含以下信息和操作：
-| 参数 | 说明 |
-|------|------|
-| 用户名 | 用户账号的唯一标识 |
-| 平台管理员 | 标识该用户是否具备平台管理员权限 |
-| 来源 | 用户来源，支持 **内置** 或 **LDAP** |
-| 创建时间 | 用户账号创建时间 |
-| 操作 | 支持 **设为管理员** 、 **取消管理员** 、 **重置密码** 、 **删除** |
+## User List Overview
 
-![用户管理概览](./images/user-overview.png)
+The user management page contains the following information and operations:
 
-## 创建用户
+| Parameter | Description |
+|-----------|-------------|
+| Username | The unique identifier of the user account. |
+| Platform Admin | Indicates whether the user has platform administrator permissions. |
+| Source | The source of the user, supporting **Built-in** or **LDAP**. |
+| Creation Time | The time the user account was created. |
+| Operations | Supports **Set as Admin**, **Cancel Admin**, **Reset Password**, and **Delete**. |
 
-1. 进入 **平台设置** -> **用户管理** 页面，点击 **创建用户** 。
-1. 输入用户名、密码和确认密码；按需勾选 **设为管理员** 。
-1. 点击 **确定** 完成创建。
+![User Overview](./images/user-overview.png)
 
-![创建用户](./images/user-create.jpg)
+## Create User
 
-## 重置密码
+1. Navigate to the **Platform Settings** -> **User Management** page and click **Create User**.
+1. Enter the username, password, and confirm password; check **Set as Admin** if necessary.
+1. Click **Confirm** to complete the creation.
 
-1. 在用户列表中找到目标用户，点击 **重置密码** 。
-1. 输入新密码和确认密码。
-1. 点击 **确定** 提交。
+![Create User](./images/user-create.jpg)
 
-![重置密码](./images/user-reset-password.jpg)
+## Reset Password
+
+1. Find the target user in the user list and click **Reset Password**.
+1. Enter the new password and confirm the password.
+1. Click **Confirm** to submit.
+
+![Reset Password](./images/user-reset-password.jpg)

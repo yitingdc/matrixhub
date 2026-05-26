@@ -2,54 +2,54 @@
 sidebar_position: 1
 ---
 
-# 创建和删除项目
+# Create and Delete Projects
 
-## 前提条件
+## Prerequisites
 
-- 已登录 MatrixHub
-- 创建代理项目时，需先在 **仓库管理** 中配置目标仓库（如 Hugging Face）
+- Logged into MatrixHub.
+- When creating a proxy project, you must first configure the target repository (e.g., Hugging Face) in **Repository Management**.
 
-## 操作步骤
+## Steps
 
-1. 登录平台后进入 **项目管理** 页面，查看项目总览。
+1. After logging in, go to the **Project Management** page to view the project overview.
 
-    ![项目管理总览](./images/project-overview.jpg)
+    ![Project Overview](./images/project-overview.jpg)
 
-1. 点击 **创建项目** ，填写项目名称，选择项目可见性（公开/私有），按需勾选 **代理项目** 后点击 **确定** 。
+1. Click **Create Project**, fill in the project name, select the project visibility (Public/Private), check **Proxy project** if needed, and click **Confirm**.
 
-    ![创建项目](./images/project-create.jpg)
+    ![Create Project](./images/project-create.jpg)
 
-1. 创建完成后，新项目会出现在项目列表中，且创建者自动拥有该项目 **管理员权限** 。
+1. Once created, the new project will appear in the project list, and the creator will automatically be assigned **Admin permissions** for that project.
 
-1. 删除项目时，在项目列表中找到目标项目并执行删除操作。
+1. To delete a project, locate the target project in the project list and perform the deletion operation.
 
 :::warning
 
-删除项目不可恢复，请在删除前确认项目内模型和数据已完成备份。
+Deleting a project cannot be undone. Please ensure you have backed up models and data within the project before proceeding.
 
 :::
 
-## 配置参数说明
+## Configuration Parameters
 
-| 参数 | 说明 |
-|------|------|
-| 项目名称 | 仅支持小写字母、数字、连字符（`-`）；且必须以字母或数字开头和结尾 |
-| 可见性 | **公开** ：其他用户可在项目管理中看到该项目；<br/>**私有** ：仅项目成员可见 |
-| 代理项目 | 勾选后可通过目标仓库进行代理访问 |
-| 目标仓库 | 代理项目必填，如 Hugging Face |
-| Organization/用户名 | 当模型路径为 `组织名/模型名`（如 `Qwen/Qwen3.5-35B-A3B`）时填写 Organization；个人账号模型填写用户名 |
+| Parameter | Description |
+|-----------|-------------|
+| Project Name | Only supports lowercase letters, numbers, and hyphens (`-`); must start and end with a letter or number. |
+| Visibility | **Public**: Other users can see this project in Project Management.<br/>**Private**: Visible only to project members. |
+| Proxy project | Check this to enable proxy access via the target repository. |
+| Target repository | Required for proxy projects (e.g., Hugging Face). |
+| Organization/Username | If the model path is `Organization/ModelName` (e.g., `Qwen/Qwen3.5-35B-A3B`), fill in the Organization; for personal account models, fill in the Username. |
 
-## 项目规则说明
+## Project Rules
 
-- **谁能创建项目：** 具备项目创建权限的用户可创建项目
-- **创建后角色：** 创建者自动成为该项目 **管理员**
-- **公开项目可见性：** 非成员用户可在项目列表看到公开项目
-- **私有项目可见性：** 非成员用户默认不可见
-- **代理项目访问：** 可下载公开模型；私有模型仍受目标仓库权限控制
+- **Who can create projects:** Users with project creation permissions can create projects.
+- **Roles after creation:** The creator automatically becomes the **Admin** of the project.
+- **Public project visibility:** Non-member users can see public projects in the project list.
+- **Private project visibility:** Hidden from non-member users by default.
+- **Proxy project access:** Public models can be downloaded; private models remain subject to the target repository's access controls.
 
-## 命名规则示例
+## Naming Rules Examples
 
-| 类型 | 示例 |
-|------|------|
-| 合法名称 | `test-project1`、`t1`、`1test2`、`test-project`、`test`、`12` |
-| 非法名称 | `t`、`-test`、`test 01`、`test%123`、`test*123`、`test~01`、`test@#$^&*()+=01`、`1test-`、`Test` |
+| Type | Examples |
+|------|----------|
+| Valid Names | `test-project1`, `t1`, `1test2`, `test-project`, `test`, `12` |
+| Invalid Names | `t`, `-test`, `test 01`, `test%123`, `test*123`, `test~01`, `test@#$^&*()+=01`, `1test-`, `Test` |

@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# 操作指南
+# Guides
 
-面向常见工作流的任务导向指南：镜像模型、配置 CI/CD 以及离线部署。
+Task-oriented guides for common workflows: mirroring models, setting up CI/CD, and offline deployment.

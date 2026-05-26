@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# 集成
+# Integrations
 
-将 MatrixHub 与推理引擎（vLLM、SGLang）、编排工具（Kubernetes）以及存储后端（MinIO、S3）集成。
+Integrate MatrixHub with inference engines (vLLM, SGLang), orchestrators (Kubernetes), and storage backends (MinIO, S3).

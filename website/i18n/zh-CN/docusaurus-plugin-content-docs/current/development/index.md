@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# 开发
+# Development
 
-贡献指南、开发环境搭建、代码架构与发布流程。
+Contributing guide, development environment setup, code architecture, and release process.
