@@ -1,7 +1,8 @@
 ---
+title: 参考
 sidebar_position: 1
 ---
 
-# Reference
+# 参考
 
-API reference, CLI commands, configuration options, and environment variables.
+API 参考、CLI 命令、配置选项和环境变量。

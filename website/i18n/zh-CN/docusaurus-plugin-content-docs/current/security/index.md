@@ -1,7 +1,8 @@
 ---
+title: 安全
 sidebar_position: 1
 ---
 
-# Security
+# 安全
 
-Authentication, authorization, audit logging, and compliance features in MatrixHub.
+MatrixHub 中的身份认证、授权、审计日志和合规功能。

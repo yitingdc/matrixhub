@@ -1,7 +1,8 @@
 ---
+title: 概览
 sidebar_position: 1
 ---
 
-# Overview
+# 概览
 
-An overview of MatrixHub — the open-source, self-hosted model hub for enterprise AI inference.
+MatrixHub 概览 —— 面向企业 AI 推理的开源、自托管模型中心。

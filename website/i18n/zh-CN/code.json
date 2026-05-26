@@ -448,16 +448,16 @@
     "message": "复制"
   },
   "changelog.title": {
-    "message": "Changelog"
+    "message": "更新日志"
   },
   "changelog.description": {
-    "message": "Release history and version notes for MatrixHub."
+    "message": "MatrixHub 的版本发布历史和更新说明。"
   },
   "changelog.heading": {
-    "message": "Changelog"
+    "message": "更新日志"
   },
   "changelog.subtitle": {
-    "message": "Release history and version notes for MatrixHub."
+    "message": "MatrixHub 的版本发布历史和更新说明。"
   },
   "community.github.title": {
     "message": "GitHub"
@@ -499,76 +499,76 @@
     "message": "加入 MatrixHub 社区 — 共同贡献、交流和构建。"
   },
   "roadmap.title": {
-    "message": "Roadmap"
+    "message": "路线图"
   },
   "roadmap.description": {
-    "message": "See what is planned for MatrixHub — upcoming features, improvements, and milestones."
+    "message": "查看 MatrixHub 的规划 — 即将推出的功能、改进和里程碑。"
   },
   "roadmap.heading": {
-    "message": "Roadmap"
+    "message": "路线图"
   },
   "roadmap.subtitle": {
-    "message": "See what is planned for MatrixHub — upcoming features, improvements, and milestones."
+    "message": "查看 MatrixHub 的规划 — 即将推出的功能、改进和里程碑。"
   },
   "airGapped.title": {
-    "message": "Air-Gapped Delivery"
+    "message": "离线环境交付"
   },
   "airGapped.description": {
-    "message": "Securely deliver AI models to isolated and air-gapped environments."
+    "message": "安全地将 AI 模型交付至物理隔离和断网环境。"
   },
   "airGapped.heading": {
-    "message": "Air-Gapped Delivery"
+    "message": "离线环境交付"
   },
   "airGapped.subtitle": {
-    "message": "Securely deliver AI models to isolated and air-gapped environments."
+    "message": "安全地将 AI 模型交付至物理隔离和断网环境。"
   },
   "architecture.title": {
-    "message": "Architecture"
+    "message": "架构"
   },
   "architecture.description": {
-    "message": "Technical architecture of MatrixHub — proxy layer, caching engine, storage backends, and API surface."
+    "message": "MatrixHub 的技术架构 — 代理层、缓存引擎、存储后端与 API 设计。"
   },
   "architecture.heading": {
-    "message": "Architecture"
+    "message": "架构"
   },
   "architecture.subtitle": {
-    "message": "Technical architecture of MatrixHub — proxy layer, caching engine, storage backends, and API surface."
+    "message": "MatrixHub 的技术架构 — 代理层、缓存引擎、存储后端与 API 设计。"
   },
   "comparison.title": {
-    "message": "Comparison"
+    "message": "方案对比"
   },
   "comparison.description": {
-    "message": "How MatrixHub compares to Hugging Face, Harbor, and other model management solutions."
+    "message": "MatrixHub 与 Hugging Face、Harbor 及其他模型管理方案的对比。"
   },
   "comparison.heading": {
-    "message": "Comparison"
+    "message": "方案对比"
   },
   "comparison.subtitle": {
-    "message": "How MatrixHub compares to Hugging Face, Harbor, and other model management solutions."
+    "message": "MatrixHub 与 Hugging Face、Harbor 及其他模型管理方案的对比。"
   },
   "governance.title": {
-    "message": "Governance"
+    "message": "安全治理"
   },
   "governance.description": {
-    "message": "Model governance with RBAC, audit trails, and compliance controls for enterprise AI."
+    "message": "通过 RBAC、审计日志和合规控制实现企业级 AI 模型治理。"
   },
   "governance.heading": {
-    "message": "Governance"
+    "message": "安全治理"
   },
   "governance.subtitle": {
-    "message": "Model governance with RBAC, audit trails, and compliance controls for enterprise AI."
+    "message": "通过 RBAC、审计日志和合规控制实现企业级 AI 模型治理。"
   },
   "hfCompatible.title": {
-    "message": "Hugging Face Compatible"
+    "message": "兼容 Hugging Face"
   },
   "hfCompatible.description": {
-    "message": "Drop-in compatibility with the Hugging Face ecosystem — use your existing tools, libraries, and workflows."
+    "message": "与 Hugging Face 生态系统无缝兼容 — 使用你已有的工具、库和工作流程。"
   },
   "hfCompatible.heading": {
-    "message": "Hugging Face Compatible"
+    "message": "兼容 Hugging Face"
   },
   "hfCompatible.subtitle": {
-    "message": "Drop-in compatibility with the Hugging Face ecosystem — use your existing tools, libraries, and workflows."
+    "message": "与 Hugging Face 生态系统无缝兼容 — 使用你已有的工具、库和工作流程。"
   },
   "product.title": {
     "message": "产品"
@@ -592,40 +592,40 @@
     "message": "查看对比"
   },
   "inferenceAccel.title": {
-    "message": "Inference Acceleration"
+    "message": "推理加速"
   },
   "inferenceAccel.description": {
-    "message": "Accelerate model distribution for vLLM, SGLang, and other inference engines with local caching."
+    "message": "通过本地缓存加速 vLLM、SGLang 等推理引擎的模型分发。"
   },
   "inferenceAccel.heading": {
-    "message": "Inference Acceleration"
+    "message": "推理加速"
   },
   "inferenceAccel.subtitle": {
-    "message": "Accelerate model distribution for vLLM, SGLang, and other inference engines with local caching."
+    "message": "通过本地缓存加速 vLLM、SGLang 等推理引擎的模型分发。"
   },
   "remoteSync.title": {
-    "message": "Remote Sync"
+    "message": "远程同步"
   },
   "remoteSync.description": {
-    "message": "Synchronize models across data centers and regions with asynchronous, resumable replication."
+    "message": "通过异步、可断点续传的复制机制在数据中心和区域之间同步模型。"
   },
   "remoteSync.heading": {
-    "message": "Remote Sync"
+    "message": "远程同步"
   },
   "remoteSync.subtitle": {
-    "message": "Synchronize models across data centers and regions with asynchronous, resumable replication."
+    "message": "通过异步、可断点续传的复制机制在数据中心和区域之间同步模型。"
   },
   "useCases.title": {
-    "message": "Use Cases"
+    "message": "使用场景"
   },
   "useCases.description": {
-    "message": "Real-world deployment scenarios for MatrixHub across enterprise AI teams."
+    "message": "MatrixHub 在企业级 AI 团队中的实际部署场景。"
   },
   "useCases.heading": {
-    "message": "Use Cases"
+    "message": "使用场景"
   },
   "useCases.subtitle": {
-    "message": "Real-world deployment scenarios for MatrixHub across enterprise AI teams."
+    "message": "MatrixHub 在企业级 AI 团队中的实际部署场景。"
   },
   "whyMatrixhub.title": {
     "message": "为何选择 MatrixHub"
@@ -640,7 +640,7 @@
     "message": "企业为何选择 MatrixHub 作为其私有模型仓库。"
   },
   "product.underConstruction": {
-    "message": "🚀 敬请期待 (Coming Soon)"
+    "message": "🚀 即将推出"
   },
   "product.feature.why.title": {
     "message": "为何选择 MatrixHub"

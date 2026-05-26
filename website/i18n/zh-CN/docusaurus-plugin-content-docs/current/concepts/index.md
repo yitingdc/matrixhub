@@ -1,7 +1,8 @@
 ---
+title: 核心概念
 sidebar_position: 1
 ---
 
-# Concepts
+# 核心概念
 
-Core concepts behind MatrixHub: proxy caching, Hugging Face compatibility, storage architecture, and RBAC model.
+MatrixHub 的核心概念：代理缓存、Hugging Face 兼容性、存储架构和 RBAC 模型。
