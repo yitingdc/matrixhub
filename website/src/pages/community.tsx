@@ -23,7 +23,7 @@ export default function Community(): React.ReactElement {
       title: translate({ id: 'community.channels.title', message: 'Community Channels' }),
       description: translate({ id: 'community.channels.description', message: 'Join the conversation on Discord, GitHub Discussions, or our mailing list.' }),
       linkText: translate({ id: 'community.channels.linkText', message: 'Join Discord →' }),
-      href: 'https://discord.gg/sQ5PgdjFE',
+      href: 'https://discord.gg/Jwbvn46Bc8',
     },
   ];
 
