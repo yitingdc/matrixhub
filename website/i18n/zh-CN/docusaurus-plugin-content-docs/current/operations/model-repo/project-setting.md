@@ -2,38 +2,38 @@
 sidebar_position: 3
 ---
 
-# Model settings
+# 模型设置
 
-Only members with **admin** permissions can edit the **Model settings** tab.
+只有具备**管理员 (admin)** 权限的成员才能编辑 **模型设置** 选项卡。
 
-![Model Settings](./images/model-setting.jpg)
+![模型设置](./images/model-setting.jpg)
 
-## Set as featured model
+## 设为热门模型
 
-1. Open the target model’s detail page and switch to **Model settings** .
+1. 打开目标模型的详情页面，并切换到 **模型设置**。
 
-1. Enable **Set as featured model** .
+1. 启用 **设为热门模型**。
 
-1. After saving, confirm the model appears under **Model repository** -> **Featured models** .
+1. 保存后，确认该模型出现在 **模型仓库** -> **热门模型** 下。
 
-    ![Featured Models](./images/hot-model.jpg)
+    ![热门模型](./images/hot-model.jpg)
 
 :::note
 
-- When featured, platform users can see the model in the featured list.
+- 设为热门后，平台用户可以在热门列表中看到该模型。
 
 :::
 
-## Delete model
+## 删除模型
 
-1. Open the target model’s detail page and switch to **Model settings** .
+1. 打开目标模型的详情页面，并切换到 **模型设置**。
 
-1. Click **Delete model** .
+1. 点击 **删除模型**。
 
-1. In the confirmation dialog, enter the project name and confirm deletion.
+1. 在确认对话框中，输入项目名称并确认删除。
 
 :::warning
 
-Deleting a model cannot be undone. Back up before proceeding.
+删除模型操作不可撤销。请在继续操作前进行备份。
 
 :::

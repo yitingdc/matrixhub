@@ -2,51 +2,51 @@
 sidebar_position: 3
 ---
 
-# Remote Synchronization
+# 远程同步
 
-Remote synchronization is used to pull **Models** or **Datasets** from a remote model repository (such as a configured Hugging Face source) into the current MatrixHub deployment according to specific rules. This is suitable for private scenarios where the platform centrally pulls and updates resources.
+远程同步用于根据特定规则，将**模型**或**数据集**从远程模型仓库（如已配置的 Hugging Face 源）拉取到当前的 MatrixHub 部署中。这适用于平台集中拉取和更新资源的私有化场景。
 
-## Prerequisites
+## 前置条件
 
-- **Permissions:** Only **Platform Admins** can create and manage remote synchronization rules.
-- **Source Repository:** An available remote source must be configured in **Repository Management**; without a configured source repository, you cannot specify a pull source.
-- **Project and Repository:** The **Target Project** is optional; if left blank, resources are stored according to the platform's default rules. **Project** and **Repository** are different concepts, please distinguish them according to the actual interface.
+- **权限：** 只有**平台管理员**才能创建和管理远程同步规则。
+- **源仓库：** 必须在**仓库管理**中配置一个可用的远程源；如果没有配置源仓库，则无法指定拉取源。
+- **项目和仓库：** **目标项目** 是可选的；如果留空，资源将根据平台默认规则进行存储。**项目**和**仓库**是不同的概念，请根据实际界面进行区分。
 
-## Steps
+## 操作步骤
 
-1. Log in to MatrixHub with an admin account, go to **Platform Management** in the navigation (or **Platform Settings** under the **Admin** dropdown), and open the **Remote Synchronization** page.
+1. 使用管理员账号登录 MatrixHub，进入导航栏的 **平台管理**（或 **管理员** 下拉菜单中的 **平台设置**），然后打开 **远程同步** 页面。
 
-    ![Sync Overview](./images/sync-overview.jpg)
+    ![同步概览](./images/sync-overview.jpg)
 
-1. Click **Create**, fill in the rules in the popup, and save.
+1. 点击 **创建**，在弹窗中填写规则，然后保存。
 
-    - **Name:** It is recommended to use an easily identifiable identifier (such as English or standardized naming).
-    - **Description:** Optional, maximum length is subject to the interface (commonly within 50 characters).
+    - **名称：** 建议使用易于识别的标识符（如英文或标准化的命名）。
+    - **描述：** 可选，最大长度受界面限制（通常在 50 个字符以内）。
 
-    ![Create Sync](./images/sync-create.jpg)
+    ![创建同步](./images/sync-create.jpg)
 
-1. Configure **Sync Rule** and **Source Repository**, **Resource Filter**, **Target Project**, **Trigger Mode**, **Bandwidth Limit**, etc. (see the **Configuration Parameters** below for details).
+1. 配置 **同步规则** 和 **源仓库**、**资源过滤**、**目标项目**、**触发方式**、**带宽限制**等（详见下方的**配置参数**）。
 
-1. Click **Confirm** to complete the creation. After creation, you can **Edit**, **Delete** the rule in the list, or trigger a pull via operations like **Sync Now** (specific button names are subject to the interface).
+1. 点击 **确认** 完成创建。创建完成后，您可以在列表中对规则进行 **编辑**、**删除**，或者通过 **立即同步** 等操作触发拉取（具体按钮名称以实际界面为准）。
 
 :::note
 
-- The current product primarily focuses on **Pulling** from remote; whether **Pushing** and all options for **Trigger Mode** are supported is subject to the actual version.
-- If the interface only provides **Auto** or **Manual**, please operate according to the currently available options.
+- 当前产品主要侧重于从远程**拉取**；是否支持**推送**以及**触发方式**的所有选项，取决于实际版本。
+- 如果界面仅提供 **自动** 或 **手动**，请根据当前可用选项进行操作。
 
 :::
 
-## Configuration Parameters
+## 配置参数
 
-| Name | Description |
+| 名称 | 描述 |
 |------|-------------|
-| Name | The display name of the synchronization rule, up to 64 characters, can only contain lowercase letters, numbers, hyphens ("-"), and dots ("."), and must start with a lowercase letter or number. |
-| Description | Supplementary explanation for the rule's purpose, within 50 characters. |
-| Sync Rule | Select the synchronization direction, currently primarily **Pull**; whether **Push** is supported depends on the version capabilities. |
-| Source Repository | Select a remote source already configured in **Repository Management** (e.g., official site, mirror site, or enterprise custom source). |
-| Resource Name | Match the resources to be synchronized by name, e.g., `llama-3` or `*` for all. |
-| Resource Type | Specify the type of synchronization object, commonly **Model**, **Dataset**, or both. |
-| Target Project | The project or workspace to which the synchronized resources will belong, **not required**; if not filled, they are stored according to platform default rules. |
-| Trigger Mode | **Manual**: Executes only when clicking sync; **Auto**: Automatically checks and pulls updates according to a periodic policy. |
-| Bandwidth Limit | Controls the synchronization download bandwidth. Entering `-1` means no limit; a positive number limits the peak rate according to the interface unit. |
-| Overwrite Existing Resources | If checked, resources with the same name will overwrite local versions with the remote ones; if unchecked, it skips if it already exists locally. |
+| 名称 | 同步规则的显示名称，最多 64 个字符，只能包含小写字母、数字、连字符（"-"）和点（"."），且必须以小写字母或数字开头。 |
+| 描述 | 规则用途的补充说明，50 个字符以内。 |
+| 同步规则 | 选择同步方向，目前主要为 **拉取**；是否支持 **推送** 取决于版本能力。 |
+| 源仓库 | 选择一个在 **仓库管理** 中已配置的远程源（例如，官方站点、镜像站点或企业自定义源）。 |
+| 资源名称 | 通过名称匹配要同步的资源，例如 `llama-3` 或用 `*` 表示所有。 |
+| 资源类型 | 指定同步对象的类型，通常为 **模型**、**数据集** 或两者兼有。 |
+| 目标项目 | 同步资源将归属的项目或工作空间，**非必填**；如果不填，将根据平台默认规则存储。 |
+| 触发方式 | **手动**：仅在点击同步时执行；**自动**：根据周期性策略自动检查并拉取更新。 |
+| 带宽限制 | 控制同步下载的带宽。输入 `-1` 表示不限制；正数则根据界面单位限制峰值速率。 |
+| 覆盖已有资源 | 如果勾选，同名资源将被远程版本覆盖；如果不勾选，本地已存在时则跳过。 |

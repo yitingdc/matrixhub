@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Translate, { translate } from '@docusaurus/Translate';
+import Link from '@docusaurus/Link';
 
 export default function ProductOverview(): React.ReactElement {
   const features = [
@@ -84,9 +85,9 @@ export default function ProductOverview(): React.ReactElement {
         <section className="py-16 max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature) => (
-              <a
+              <Link
                 key={feature.href}
-                href={feature.href}
+                to={feature.href}
                 className="group block rounded-xl border border-slate-800 bg-slate-900/60 p-6 transition hover:border-green-500/40 hover:bg-slate-800/60 no-underline"
               >
                 <div className="text-3xl mb-4">{feature.emoji}</div>
@@ -94,7 +95,7 @@ export default function ProductOverview(): React.ReactElement {
                   {feature.title}
                 </h3>
                 <p className="text-sm text-slate-400">{feature.description}</p>
-              </a>
+              </Link>
             ))}
           </div>
         </section>
@@ -111,12 +112,12 @@ export default function ProductOverview(): React.ReactElement {
                 solutions.
               </Translate>
             </p>
-            <a
-              href="/product/comparison"
+            <Link
+              to="/product/comparison"
               className="inline-block rounded-lg bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-500 transition no-underline"
             >
               <Translate id="product.comparison.cta">View Comparison</Translate>
-            </a>
+            </Link>
           </div>
         </section>
       </main>

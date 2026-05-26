@@ -2,44 +2,44 @@
 sidebar_position: 2
 ---
 
-# Repository Management
+# 仓库管理
 
-Repository Management is used to configure the platform's connection information for accessing external model sources (such as Hugging Face, ModelScope, or enterprise internal sources). The repository created here serves as an **upstream data source connector**, which will be selected as the **Source Repository** in **Remote Synchronization**.
+仓库管理用于配置平台访问外部模型源（如 Hugging Face、ModelScope 或企业内部源）的连接信息。在此处创建的仓库作为**上游数据源连接器**，在**远程同步**中将被选作**源仓库**。
 
-## Prerequisites
+## 前置条件
 
-- **Permissions:** Only **Platform Admins** can create and manage repository configurations.
-- **Network Connectivity:** The environment where MatrixHub is deployed must have access to the target URL (e.g., public sources or internal mirrors).
-- **Credentials:** If accessing private resources is required, prepare the account password or token in advance.
+- **权限：** 只有**平台管理员**才能创建和管理仓库配置。
+- **网络连通性：** 部署 MatrixHub 的环境必须能够访问目标 URL（例如公共源或内部镜像）。
+- **凭据：** 如果需要访问私有资源，请提前准备好账号密码或 Token。
 
-## Steps
+## 操作步骤
 
-1. Log in to MatrixHub with an admin account, go to **Platform Management** in the navigation (or **Platform Settings** under the **Admin** dropdown), and open the **Repository Management** page.
+1. 使用管理员账号登录 MatrixHub，进入导航栏的 **平台管理**（或 **管理员** 下拉菜单中的 **平台设置**），然后打开 **仓库管理** 页面。
 
-    ![Repository Overview](./images/repo-overview.jpg)
+    ![仓库概览](./images/repo-overview.jpg)
 
-1. Click **Create**, select the provider in the popup, and fill in the repository configuration.
+1. 点击 **创建**，在弹窗中选择提供商，并填写仓库配置。
 
-    ![Create Repository](./images/repo-create.jpg)
+    ![创建仓库](./images/repo-create.jpg)
 
-1. Fill in fields such as **Repository Name**, **Target URL**, **Authentication Information**, and **Certificate Verification** according to your actual environment (see the **Configuration Parameters** below for details).
+1. 根据您的实际环境，填写 **仓库名称**、**目标 URL**、**认证信息** 和 **证书验证** 等字段（详见下方的**配置参数**）。
 
-1. Click **Confirm** to complete the creation. After creation, you can **Edit** or **Delete** the repository in the list; created repositories can be used as the **Source Repository** on the **Remote Synchronization** page.
+1. 点击 **确认** 完成创建。创建完成后，您可以在列表中对仓库进行 **编辑** 或 **删除**；已创建的仓库可用作 **远程同步** 页面中的 **源仓库**。
 
-## Configuration Parameters
+## 配置参数
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| Provider | The upstream protocol or platform type, such as **Hugging Face**, **ModelScope**, or other supported sources. |
-| Name | The display name of the current connection configuration, an identifiable alias is recommended (e.g., `HF-Official`, `HF-Mirror`). |
-| Target URL | The entry address of the upstream service. Example: `https://huggingface.co`, `https://hf-mirror.com`. |
-| Username | The account identifier used to access upstream private resources; can be left blank for public resources depending on the interface requirements. |
-| Password / Token | The password or access token corresponding to the username. In the Hugging Face scenario, you usually enter the Access Token here. |
-| Verify Remote Certificate | If checked, it verifies the remote TLS certificate. If the remote source uses a self-signed or untrusted certificate, you can uncheck it depending on your environment's policy. |
+| 提供商 | 上游协议或平台类型，如 **Hugging Face**、**ModelScope** 或其他支持的源。 |
+| 名称 | 当前连接配置的显示名称，建议使用易于识别的别名（如 `HF-Official`、`HF-Mirror`）。 |
+| 目标 URL | 上游服务的入口地址。示例：`https://huggingface.co`、`https://hf-mirror.com`。 |
+| 用户名 | 用于访问上游私有资源的账号标识；对于公共资源，根据界面要求可留空。 |
+| 密码 / Token | 与用户名对应的密码或访问令牌。在 Hugging Face 场景中，通常在此处输入 Access Token。 |
+| 验证远程证书 | 如果勾选，将验证远程 TLS 证书。如果远程源使用自签名或不受信任的证书，您可以根据环境策略取消勾选。 |
 
 :::note
 
-- The "repository" in "Repository Management" is not a specific model or dataset address, but a reusable upstream connection configuration.
-- To specify exactly which models/datasets to synchronize, you should define rules via resource names and types in **Remote Synchronization**.
+- “仓库管理”中的“仓库”并不是指某个特定的模型或数据集地址，而是一个可复用的上游连接配置。
+- 要确切指定同步哪些模型/数据集，您应在 **远程同步** 中通过资源名称和类型来定义规则。
 
 :::

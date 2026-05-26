@@ -1,63 +1,64 @@
 ---
 sidebar_position: 1
+title: 介绍
 ---
 
-# Introduction
+# 介绍
 
-Welcome to **MatrixHub**—an open-source, self-hosted AI model registry engineered for large-scale enterprise inference. It serves as a **drop-in private replacement for Hugging Face**, purpose-built to accelerate **vLLM** and **SGLang** workloads.
+欢迎使用 **MatrixHub**——这是一个专为大规模企业级推理而设计的开源、支持私有化部署的 AI 模型中心。它可以作为 **Hugging Face 的私有替代方案** 实现开箱即用的替换，专门用于加速 **vLLM** 和 **SGLang** 等推理工作负载。
 
-## Why MatrixHub?
+## 为什么选择 MatrixHub？
 
-MatrixHub streamlines the transition from public model hubs to production-grade infrastructure:
+MatrixHub 简化了从公共模型中心向生产级基础设施过渡的过程：
 
-### 🚀 Zero-Wait Distribution
-Eliminate bandwidth bottlenecks with a **"Pull-once, serve-all"** cache, enabling **10Gbps+** speeds across 100+ GPU nodes simultaneously.
+### 🚀 零等待分发
+通过**“一次拉取，全量服务”**的缓存机制消除带宽瓶颈，同时在 100 多个 GPU 节点上实现 **10Gbps+** 的下载速度。
 
-### 🔐 Air-Gapped Delivery
-Securely ferry models into isolated networks while maintaining a native `HF_ENDPOINT` experience for researchers—**no internet required**.
+### 🔐 离线环境交付
+在为研究人员保持原生的 `HF_ENDPOINT` 使用体验的同时，将模型安全地传输到物理隔离的网络环境中——**无需访问互联网**。
 
-### 📦 Private AI Model Registry
-Centralize fine-tuned weights with **Tag locking** and CI/CD integration to guarantee absolute consistency from development to production.
+### 📦 私有 AI 模型仓库
+通过**标签锁定（Tag locking）**和 CI/CD 集成对微调后的权重进行集中管理，以确保从开发到生产环境的一致性。
 
-### 🌍 Global Multi-Region Sync
-Automate asynchronous, resumable replication between data centers for high availability and **low-latency local access**.
+### 🌍 全局多区域同步
+自动化在数据中心之间进行异步、可断点续传的复制，以实现高可用性和**低延迟的本地访问**。
 
-## Core Features
+## 核心特性
 
-### 🚀 High-Performance Distribution
+### 🚀 高性能分发
 
-- **Transparent HF Proxy**: Switch to private hosting with zero code changes by simply redirecting your endpoint.
-- **On-Demand Caching**: Automatically localizes public models upon the first request to slash redundant traffic.
-- **Inference Native**: Native support for **P2P distribution**, OCI artifacts, and **NetLoader** for direct-to-GPU weight streaming.
+- **透明的 HF 代理**：只需重定向 endpoint 端点，即可零代码修改地切换到私有托管环境。
+- **按需缓存**：在首次请求时自动本地化缓存公共模型，大幅削减冗余网络流量。
+- **专为推理而生**：原生支持 **P2P 分发**、OCI 制品以及用于直接向 GPU 流式传输权重的 **NetLoader**。
 
-### 🛡️ Enterprise Governance & Security
+### 🛡️ 企业级治理与安全
 
-- **RBAC & Multi-Tenancy**: Project-based isolation with granular permissions and seamless LDAP/SSO integration.
-- **Audit & Compliance**: Full traceability with comprehensive logs for every upload, download, and configuration change.
-- **Integrity Protection**: Built-in malware scanning and content signing to ensure models remain untampered.
+- **RBAC & 多租户**：提供基于项目的细粒度权限隔离，并无缝集成 LDAP/SSO。
+- **审计与合规**：完整的可追溯性，为每次上传、下载和配置更改提供详细记录。
+- **完整性保护**：内置恶意软件扫描与内容签名，确保模型未被篡改。
 
-### 🌍 Scalable Infrastructure
+### 🌍 可扩展的基础设施
 
-- **Storage Agnostic**: Compatible with local file systems, NFS, and S3-compatible backends (MinIO, AWS, etc.).
-- **Reliable Replication**: Policy-driven, chunked transfers ensure data consistency even over unstable global networks.
-- **Cloud-Native Design**: Optimized for Kubernetes with official **Helm charts** and horizontal scaling capabilities.
+- **存储无关**：兼容本地文件系统、NFS 以及兼容 S3 的存储后端（如 MinIO、AWS 等）。
+- **可靠复制**：由策略驱动的分块传输机制，确保即便在全球不稳定的网络中也能保持数据一致性。
+- **云原生设计**：为 Kubernetes 优化，提供官方 **Helm charts** 和水平弹性伸缩能力。
 
-## Key Use Cases
+## 主要使用场景
 
-### 1. Intranet Inference Acceleration
-Accelerate model distribution across internal GPU clusters with intelligent caching that turns multiple downloads into a single fetch.
+### 1. 内网推理加速
+通过智能缓存机制，将多次下载合并为单次拉取，从而加速内部 GPU 集群间的模型分发。
 
-### 2. Air-Gapped Environments
-Deploy models in isolated networks (government, defense, finance) with secure transport and full data residency guarantees.
+### 2. 物理隔离环境
+在隔离的网络（如政府、国防、金融）中部署模型，提供安全传输和完整的数据驻留保证。
 
-### 3. Enterprise Asset Management
-Manage enterprise model versions with CI/CD integration, ensuring training → testing → production consistency.
+### 3. 企业资产管理
+借助 CI/CD 集成管理企业模型版本，确保训练 → 测试 → 生产环境的严格一致。
 
-### 4. Multi-Region Sync
-Replicate models across global data centers with automatic resumption on network interruptions.
+### 4. 多区域同步
+在全球数据中心之间复制模型，遇到网络中断时支持自动断点续传。
 
-## Getting Started
+## 快速开始
 
-MatrixHub is easy to deploy using **Docker Compose** or **Kubernetes**. The entire infrastructure is open source and free for the community.
+MatrixHub 使用 **Docker Compose** 或 **Kubernetes** 部署非常简单。整个基础设施开源且对社区完全免费。
 
-👉 **Ready to get started?** Head over to the [Blog](/blog) to read the DeepSeek v4 walkthrough and usage examples.
+👉 **准备好开始了吗？** 前往[博客](/blog)阅读 DeepSeek v4 的演示和使用示例。

@@ -2,62 +2,62 @@
 sidebar_position: 1
 ---
 
-# Access Token
+# 访问令牌 (Access Token)
 
-## Prerequisites
+## 前置条件
 
-- A valid MatrixHub account.
-- Access to at least one private repository or public repository (e.g., `my-matrixhub-project/test-mn`).
-- Hugging Face CLI installed locally, and the command `hf auth login` is available in your terminal.
+- 拥有有效的 MatrixHub 账号。
+- 至少拥有一个私有仓库或公共仓库的访问权限（例如：`my-matrixhub-project/test-mn`）。
+- 本地已安装 Hugging Face CLI，且终端中可以使用 `hf auth login` 命令。
 
-## Steps
+## 操作步骤
 
-### Create Access Token
+### 创建访问令牌
 
-1. Log in to the MatrixHub platform. Go to the **Personal Center** -> **Access Token** page.
+1. 登录 MatrixHub 平台。进入 **个人中心** -> **访问令牌 (Access Token)** 页面。
 
-    ![Access Token Overview](./images/access-token-overview.jpg)
+    ![访问令牌概览](./images/access-token-overview.jpg)
 
-1. Click **Create Access Token**, fill in a name (e.g., `demo`), select the expiration time (e.g., **Never expires** or a specific duration), and click **Confirm**.
+1. 点击 **创建访问令牌**，填写名称（例如：`demo`），选择过期时间（例如：**永不过期** 或特定时长），然后点击 **确认**。
 
-    ![Create Access Token](./images/access-token-create.jpg)
+    ![创建访问令牌](./images/access-token-create.jpg)
 
-1. Once created, a window will pop up displaying the Token. **Copy and save it immediately**, as it will not be shown again.
+1. 创建成功后，将弹出一个窗口显示 Token。**请立即复制并妥善保存**，因为它将不再显示。
 
-    ![Save Access Token](./images/access-token-save.png)
+    ![保存访问令牌](./images/access-token-save.png)
 
-### Use Access Token
+### 使用访问令牌
 
-1. Configure the service endpoint in your local terminal using your MatrixHub address:
+1. 使用您的 MatrixHub 地址在本地终端中配置服务端点：
 
     ```bash
-    export HF_ENDPOINT="matrixhub.url" # example: http://127.0.0.1:xxx
+    export HF_ENDPOINT="matrixhub.url" # 示例: http://127.0.0.1:xxx
     ```
 
-1. Run the login command:
+1. 运行登录命令：
 
     ```bash
     hf auth login
     ```
 
-1. Enter your saved Token when prompted to complete authentication.
+1. 根据提示输入您保存的 Token 以完成身份验证。
 
-1. Execute a download command to verify access to the **MatrixHub** repository:
+1. 执行下载命令以验证对 **MatrixHub** 仓库的访问权限：
 
     ```bash
     hf download my-matrixhub-project/test-mn
     ```
 
-### Revoke Access Token
+### 撤销访问令牌
 
-1. Go to the **Personal Center** -> **Access Token** page, find the target Token, and perform the delete operation.
+1. 进入 **个人中心** -> **访问令牌** 页面，找到目标 Token，并执行删除操作。
 
-1. Once revoked, any CLI operations requiring authentication with that Token will prompt that you are not logged in or the authentication is invalid.
+1. 撤销后，任何需要该 Token 进行身份验证的 CLI 操作都会提示您尚未登录或身份验证无效。
 
-## Configuration Parameters
+## 配置参数
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| Name | A descriptive identifier for the Token, useful for distinguishing different purposes. |
-| Expiration | Can be set to **Never expires** or a custom date. It will automatically become invalid after this period. |
-| Token Value | The actual secret string used for authentication. It is only fully displayed once upon creation and must be copied and saved immediately. |
+| 名称 | Token 的描述性标识符，用于区分不同用途。 |
+| 过期时间 | 可以设置为 **永不过期** 或自定义日期。超过该期限后将自动失效。 |
+| Token 值 | 用于身份验证的实际密钥字符串。仅在创建时完整显示一次，必须立即复制并保存。 |
