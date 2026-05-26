@@ -65,6 +65,8 @@ export default function Community(): React.ReactElement {
                 <p className="text-sm text-slate-400 mb-6">{section.description}</p>
                 <a
                   href={section.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-auto text-sm font-medium text-green-400 hover:text-green-300 transition no-underline"
                 >
                   {section.linkText}
