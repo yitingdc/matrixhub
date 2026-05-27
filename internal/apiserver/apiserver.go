@@ -457,6 +457,7 @@ func (server *APIServer) initHandlersServicesRepos() {
 		handler.NewSyncPolicyHandler(syncPolicyService, syncJobService, repos.Registry, logStore, canc),
 		handler.NewRoleHandler(),
 		handler.NewRobotHandler(repos.Robot, repos.Project),
+		handler.NewSystemHandler(repo.NewSystemProvider(server.config)),
 	}
 
 	server.repos = repos

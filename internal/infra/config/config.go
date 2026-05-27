@@ -103,6 +103,11 @@ type APIServerConfig struct {
 	SSHPort        int    `yaml:"sshPort"`
 	SSHHostKeyPath string `yaml:"sshHostKeyPath"`
 	HostURL        string `yaml:"hostURL"`
+	// ExternalURL is the externally-reachable base URL of this instance. It is
+	// surfaced to the frontend (e.g. as the `HF_ENDPOINT` for `hf` CLI snippets).
+	// Empty means "not configured" and the API returns an empty string so the
+	// UI can hide affected panels.
+	ExternalURL string `yaml:"externalURL"`
 }
 
 type UIConfig struct {

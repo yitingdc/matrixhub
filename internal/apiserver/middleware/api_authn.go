@@ -29,7 +29,8 @@ import (
 )
 
 var publicMethods = map[string]bool{
-	"/matrixhub.v1alpha1.Login/Login": true,
+	"/matrixhub.v1alpha1.Login/Login":                   true,
+	"/matrixhub.v1alpha1.SystemService/GetSystemConfig": true,
 }
 
 func AuthInterceptor(sessionRepo user.ISessionRepo, userRepo user.IUserRepo, tokenRepo user.IAccessTokenRepo, robotRepo robot.IRobotRepo) grpc.UnaryServerInterceptor {

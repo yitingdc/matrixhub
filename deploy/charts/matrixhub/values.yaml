@@ -73,6 +73,11 @@ apiserver:
   # -- api server port
   port: 9527
 
+  # -- externally-reachable base URL of this instance. Surfaced to the frontend
+  # (used as `HF_ENDPOINT` for `hf` CLI snippets, etc). Leave empty to hide
+  # affected UI panels. Example: https://matrixhub.example.com
+  externalURL: ""
+
   # -- storage configuration for git storage (models, datasets, lfs)
   storage:
     # -- storage mode: none (no persistence), pvc (PersistentVolumeClaim), s3 (object storage)
