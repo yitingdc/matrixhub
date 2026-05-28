@@ -1,17 +1,35 @@
 # GitHub Actions Self-Hosted Runner for MatrixHub auto-deploy
 #
-# Prerequisites:
-#   1. Create a GitHub Personal Access Token (PAT) with "repo" scope
-#      or a fine-grained token with "Administration" read/write on the repo
-#   2. Create the secret manually:
-#      kubectl -n matrixhub-runner create secret generic github-runner-secret \
-#        --from-literal=github-pat=ghp_YOUR_TOKEN_HERE
-#   3. kubectl apply -f runner-deployment.yaml
+# This deploys an org-level (or repo-level) self-hosted runner inside an
+# internal K8s cluster. The runner makes outbound HTTPS long-poll
+# connections to github.com — no inbound ports, no webhook receiver.
 #
-# The runner registers itself with GitHub on startup (outbound HTTPS only,
-# no inbound ports needed). When build-image-latest.yaml triggers the
-# deploy-internal job (runs-on: self-hosted), it executes helm upgrade
-# inside this pod.
+# Two auth modes (pick ONE — see comments in the Deployment env block):
+#
+#   A) Registration token (one-time, persisted via PVC)
+#      - Owner generates an org-level registration token (UI or API).
+#      - Token is valid for 1 hour; runner uses it once to register.
+#      - Runner credentials (.runner, .credentials, ~6-month lifetime) are
+#        written to the mounted PVC. Pod restarts reuse those credentials
+#        without needing a new registration token.
+#      - Set RUNNER_TOKEN secret key; leave ACCESS_TOKEN unset.
+#
+#   B) Long-lived PAT (admin:org on org-level, or admin on repo-level)
+#      - Bot account creates a PAT and stores it in the secret.
+#      - Runner mints a fresh registration token on each startup.
+#      - More resilient (no PVC dependency) but PAT is a long-term secret.
+#      - Set ACCESS_TOKEN secret key; leave RUNNER_TOKEN unset.
+#
+# Bootstrap:
+#   kubectl apply -f runner-deployment.yaml
+#
+#   # mode A (registration token):
+#   kubectl -n matrixhub-runner create secret generic github-runner-secret \
+#     --from-literal=runner-token=AAAAxxxx_1HOUR_TOKEN
+#
+#   # mode B (PAT):
+#   kubectl -n matrixhub-runner create secret generic github-runner-secret \
+#     --from-literal=github-pat=ghp_xxxx
 ---
 apiVersion: v1
 kind: Namespace
@@ -54,8 +72,8 @@ metadata:
   name: github-runner-values
   namespace: matrixhub-runner
 data:
-  # Internal network values override for helm upgrade
-  # Customize these for your environment
+  # Internal-network helm values override.
+  # Customize these for your environment.
   values-internal.yaml: |
     apiserver:
       image:
@@ -74,6 +92,20 @@ data:
       persistence:
         size: 8Gi
 ---
+# PVC for runner credentials (.runner, .credentials, .credentials_rsaparams).
+# These files have ~6-month lifetime and let the runner reconnect across
+# pod restarts without needing a new registration token.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: github-runner-data
+  namespace: matrixhub-runner
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -83,6 +115,10 @@ metadata:
     app: github-runner
 spec:
   replicas: 1
+  # Recreate (not RollingUpdate) — two pods cannot share the same PVC,
+  # and only one runner should own the credentials at a time.
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: github-runner
@@ -96,13 +132,33 @@ spec:
         - name: runner
           image: docker.m.daocloud.io/myoung34/github-runner:latest
           env:
-            - name: REPO_URL
-              value: "https://github.com/OWNER/REPO"
-            - name: ACCESS_TOKEN
+            # ---- Target scope (pick ONE) ----
+            # Org-level (recommended — runner can serve any repo in the org's runner group)
+            - name: ORG_NAME
+              value: "matrixhub-ai"
+            - name: RUNNER_GROUP
+              value: "internal-deploy"
+            # Repo-level (uncomment & comment-out ORG_NAME above if needed)
+            # - name: REPO_URL
+            #   value: "https://github.com/matrixhub-ai/matrixhub"
+
+            # ---- Auth (pick ONE — see header comments) ----
+            # Mode A: registration token (one-time, persisted via PVC)
+            - name: RUNNER_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: github-runner-secret
-                  key: github-pat
+                  key: runner-token
+                  optional: true
+            # Mode B: long-lived PAT (uncomment to use)
+            # - name: ACCESS_TOKEN
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: github-runner-secret
+            #       key: github-pat
+            #       optional: true
+
+            # ---- Runner config ----
             - name: RUNNER_NAME
               valueFrom:
                 fieldRef:
@@ -110,17 +166,26 @@ spec:
             - name: LABELS
               value: "self-hosted,linux,internal"
             - name: RUNNER_WORKDIR
-              value: "/home/runner/_work"
+              value: "/runner/_work"
             - name: DISABLE_AUTO_UPDATE
               value: "true"
-            # Chart registry — runner pod has outbound internet (it talks to github.com),
-            # so pull chart directly from ghcr.io. Override per-fork as needed.
+            # Non-ephemeral so registration survives pod restarts (when PVC persists)
+            - name: EPHEMERAL
+              value: "false"
+            # Don't deregister on shutdown — credentials would be invalidated
+            - name: RUNNER_SCOPE
+              value: "org"
+
+            # ---- Deploy-job environment (read by build-image-latest.yaml) ----
+            # Chart pulled directly from ghcr.io (runner has outbound internet;
+            # the daocloud mirror doesn't proxy OCI bearer auth correctly).
             - name: CHART_REGISTRY
               value: "oci://ghcr.io/matrixhub-ai"
-            # Target namespace for helm upgrade
             - name: DEPLOY_NAMESPACE
               value: "matrixhub"
           volumeMounts:
+            - name: runner-data
+              mountPath: /runner
             - name: values
               mountPath: /etc/matrixhub
               readOnly: true
@@ -132,6 +197,9 @@ spec:
               cpu: "2"
               memory: 2Gi
       volumes:
+        - name: runner-data
+          persistentVolumeClaim:
+            claimName: github-runner-data
         - name: values
           configMap:
             name: github-runner-values
