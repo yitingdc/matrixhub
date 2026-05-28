@@ -1,0 +1,137 @@
+# GitHub Actions Self-Hosted Runner for MatrixHub auto-deploy
+#
+# Prerequisites:
+#   1. Create a GitHub Personal Access Token (PAT) with "repo" scope
+#      or a fine-grained token with "Administration" read/write on the repo
+#   2. Create the secret manually:
+#      kubectl -n matrixhub-runner create secret generic github-runner-secret \
+#        --from-literal=github-pat=ghp_YOUR_TOKEN_HERE
+#   3. kubectl apply -f runner-deployment.yaml
+#
+# The runner registers itself with GitHub on startup (outbound HTTPS only,
+# no inbound ports needed). When build-image-latest.yaml triggers the
+# deploy-internal job (runs-on: self-hosted), it executes helm upgrade
+# inside this pod.
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: matrixhub-runner
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: github-runner
+  namespace: matrixhub-runner
+---
+# Runner needs cluster-wide permissions to run helm upgrade
+# (Helm manages Deployments, Services, ConfigMaps, Secrets, etc.)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: matrixhub-github-runner
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: matrixhub-github-runner
+subjects:
+  - kind: ServiceAccount
+    name: github-runner
+    namespace: matrixhub-runner
+roleRef:
+  kind: ClusterRole
+  name: matrixhub-github-runner
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: github-runner-values
+  namespace: matrixhub-runner
+data:
+  # Internal network values override for helm upgrade
+  # Customize these for your environment
+  values-internal.yaml: |
+    apiserver:
+      image:
+        registry: ghcr.m.daocloud.io
+        repository: matrixhub-ai/matrixhub
+        tag: "latest"
+        pullPolicy: Always
+      service:
+        type: NodePort
+      storage:
+        mode: pvc
+        pvc:
+          size: 60Gi
+    mysql:
+      registry: docker.m.daocloud.io
+      persistence:
+        size: 8Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-runner
+  namespace: matrixhub-runner
+  labels:
+    app: github-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-runner
+  template:
+    metadata:
+      labels:
+        app: github-runner
+    spec:
+      serviceAccountName: github-runner
+      containers:
+        - name: runner
+          image: docker.m.daocloud.io/myoung34/github-runner:latest
+          env:
+            - name: REPO_URL
+              value: "https://github.com/OWNER/REPO"
+            - name: ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: github-runner-secret
+                  key: github-pat
+            - name: RUNNER_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: LABELS
+              value: "self-hosted,linux,internal"
+            - name: RUNNER_WORKDIR
+              value: "/home/runner/_work"
+            - name: DISABLE_AUTO_UPDATE
+              value: "true"
+            # Chart registry — runner pod has outbound internet (it talks to github.com),
+            # so pull chart directly from ghcr.io. Override per-fork as needed.
+            - name: CHART_REGISTRY
+              value: "oci://ghcr.io/matrixhub-ai"
+            # Target namespace for helm upgrade
+            - name: DEPLOY_NAMESPACE
+              value: "matrixhub"
+          volumeMounts:
+            - name: values
+              mountPath: /etc/matrixhub
+              readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+      volumes:
+        - name: values
+          configMap:
+            name: github-runner-values
