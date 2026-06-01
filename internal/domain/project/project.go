@@ -70,7 +70,7 @@ const (
 func PermissionsForFilter(f PermissionFilter) []role.Permission {
 	switch f {
 	case PermissionFilterCanWrite:
-		return []role.Permission{role.ModelPush, role.DatasetPush}
+		return role.ProjectWritePermission
 	default:
 		return []role.Permission{role.ProjectGet}
 	}

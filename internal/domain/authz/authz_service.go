@@ -116,7 +116,6 @@ func (s *AuthzService) getUserPermissions(ctx context.Context, id *user.Identity
 	if err != nil {
 		return nil, err
 	}
-
 	return append(platformPerms, projectPerms...), nil
 }
 
