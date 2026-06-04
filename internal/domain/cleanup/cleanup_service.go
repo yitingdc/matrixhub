@@ -65,16 +65,9 @@ func (s *CleanupService) PreviewCleanup(ctx context.Context, includeRepos, inclu
 		if err != nil {
 			return nil, err
 		}
-		preview.OrphanedRepos = make([]*OrphanedRepo, len(orphanedRepos))
-		for i, repo := range orphanedRepos {
-			preview.OrphanedRepos[i] = &OrphanedRepo{
-				Path:         repo.Path,
-				Type:         repo.Type,
-				ProjectName:  repo.ProjectName,
-				ResourceName: repo.ResourceName,
-				SizeBytes:    repo.SizeBytes,
-			}
-			preview.TotalReclaimable += preview.OrphanedRepos[i].SizeBytes
+		preview.OrphanedRepos = orphanedRepos
+		for _, repo := range orphanedRepos {
+			preview.TotalReclaimable += repo.SizeBytes
 		}
 	}
 
@@ -83,14 +76,9 @@ func (s *CleanupService) PreviewCleanup(ctx context.Context, includeRepos, inclu
 		if err != nil {
 			return nil, err
 		}
-		preview.OrphanedLFSObjects = make([]*OrphanedLFS, len(orphanedLFS))
-		for i, obj := range orphanedLFS {
-			preview.OrphanedLFSObjects[i] = &OrphanedLFS{
-				OID:       obj.OID,
-				SizeBytes: obj.SizeBytes,
-				Path:      obj.Path,
-			}
-			preview.TotalReclaimable += preview.OrphanedLFSObjects[i].SizeBytes
+		preview.OrphanedLFSObjects = orphanedLFS
+		for _, obj := range orphanedLFS {
+			preview.TotalReclaimable += obj.SizeBytes
 		}
 	}
 
@@ -111,7 +99,7 @@ func (s *CleanupService) ExecuteCleanup(ctx context.Context, cleanRepos, cleanLF
 				result.ReposDeleted++
 				result.SpaceReclaimed += repo.SizeBytes
 			} else {
-				if err := s.gitRepo.DeleteRepo(ctx, repo.Path); err != nil {
+				if err := s.gitRepo.DeleteRepositoryAtRelPath(ctx, repo.Path); err != nil {
 					result.Errors = append(result.Errors, err.Error())
 				} else {
 					result.ReposDeleted++
@@ -131,11 +119,7 @@ func (s *CleanupService) ExecuteCleanup(ctx context.Context, cleanRepos, cleanLF
 				result.LFSObjectsDeleted++
 				result.SpaceReclaimed += obj.SizeBytes
 			} else {
-				if err := s.gitRepo.DeleteLFSObject(ctx, &git.OrphanedLFS{
-					OID:       obj.OID,
-					SizeBytes: obj.SizeBytes,
-					Path:      obj.Path,
-				}); err != nil {
+				if err := s.gitRepo.DeleteLFSObject(ctx, obj); err != nil {
 					result.Errors = append(result.Errors, err.Error())
 				} else {
 					result.LFSObjectsDeleted++

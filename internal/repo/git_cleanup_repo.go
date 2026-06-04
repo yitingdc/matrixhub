@@ -119,8 +119,8 @@ func (g *gitRepo) FindOrphanedLFS(ctx context.Context) ([]*git.OrphanedLFS, erro
 	return orphaned, nil
 }
 
-// DeleteRepo deletes an orphaned repository by relative path.
-func (g *gitRepo) DeleteRepo(ctx context.Context, path string) error {
+// DeleteRepositoryAtRelPath deletes an orphaned repository by relative path.
+func (g *gitRepo) DeleteRepositoryAtRelPath(ctx context.Context, path string) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}

@@ -182,8 +182,8 @@ type IGitRepo interface {
 	FindOrphanedRepos(ctx context.Context, validModelPaths, validDatasetPaths []string) ([]*OrphanedRepo, error)
 	// FindOrphanedLFS finds LFS objects on disk that are not referenced by repositories.
 	FindOrphanedLFS(ctx context.Context) ([]*OrphanedLFS, error)
-	// DeleteRepo deletes an orphaned repository by relative path.
-	DeleteRepo(ctx context.Context, path string) error
+	// DeleteRepositoryAtRelPath deletes an orphaned repository by relative path.
+	DeleteRepositoryAtRelPath(ctx context.Context, path string) error
 	// DeleteLFSObject deletes an orphaned LFS object.
 	DeleteLFSObject(ctx context.Context, object *OrphanedLFS) error
 	// RepositoriesSize returns the size of all repositories on disk.

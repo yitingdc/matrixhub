@@ -128,7 +128,6 @@ func NewAPIServer(config *config.Config) *APIServer {
 	server.initGitHooks()
 	server.initGitAuth()
 	server.initSSHBackend()
-	server.initHandlersServicesRepos()
 
 	// Register authn + authz middleware (must be after initHandlersServicesRepos)
 	streamMiddleware := []grpc.StreamServerInterceptor{

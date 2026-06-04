@@ -333,54 +333,40 @@ func collectAllReachableLFSOIDs(repo *repository.Repository) (map[string]bool, e
 #### 2.7 Core Function Design
 
 ```go
-// internal/domain/cleanup/lfs_detector.go
+// internal/repo/git_cleanup_repo.go
 
-package cleanup
+package repo
 
 import (
     "context"
-    "os"
-    "path/filepath"
 
     "github.com/matrixhub-ai/hfd/pkg/repository"
+    "github.com/matrixhub-ai/matrixhub/internal/domain/git"
 )
 
-// LFSOrphanDetector detects orphaned LFS objects
-type LFSOrphanDetector struct {
-    dataDir     string  // Configured DataDir
-    lfsDir      string  // LFS storage directory path
-    storage     *storage.Storage
-}
-
-// OrphanedLFSObject represents an orphaned LFS object
-type OrphanedLFSObject struct {
-    OID      string
-    Size     int64
-    Path     string  // Filesystem path
-}
-
-// DetectOrphanedLFS performs orphaned LFS detection
-func (d *LFSOrphanDetector) DetectOrphanedLFS(ctx context.Context) ([]*OrphanedLFSObject, error) {
+// FindOrphanedLFS performs orphaned LFS detection.
+// It is implemented by *gitRepo behind domain/git.IGitRepo.
+func (g *gitRepo) FindOrphanedLFS(ctx context.Context) ([]*git.OrphanedLFS, error) {
     // Step 1: Scan LFS directory, get all OIDs
-    allOIDs, err := d.scanLFSObjects()
+    allOIDs, err := g.scanLFSObjects(ctx)
     if err != nil {
         return nil, err
     }
 
     // Step 2: Collect all referenced OIDs
-    referencedOIDs, err := d.collectReferencedOIDs(ctx)
+    referencedOIDs, err := g.collectReferencedOIDs(ctx)
     if err != nil {
         return nil, err
     }
 
     // Step 3: Calculate difference
-    orphaned := make([]*OrphanedLFSObject, 0)
+    orphaned := make([]*git.OrphanedLFS, 0)
     for oid, info := range allOIDs {
         if !referencedOIDs[oid] {
-            orphaned = append(orphaned, &OrphanedLFSObject{
-                OID:  oid,
-                Size: info.size,
-                Path: info.path,
+            orphaned = append(orphaned, &git.OrphanedLFS{
+                OID:       oid,
+                SizeBytes: info.size,
+                Path:      info.path,
             })
         }
     }
@@ -389,7 +375,7 @@ func (d *LFSOrphanDetector) DetectOrphanedLFS(ctx context.Context) ([]*OrphanedL
 }
 
 // collectRepoLFSOIDs collects all LFS OIDs from a single repository (including historical commits)
-func (d *LFSOrphanDetector) collectRepoLFSOIDs(repo *repository.Repository) (map[string]bool, error) {
+func (g *gitRepo) collectRepoLFSOIDs(repo *repository.Repository) (map[string]bool, error) {
     oids := make(map[string]bool)
 
     // Process all branches
@@ -399,7 +385,7 @@ func (d *LFSOrphanDetector) collectRepoLFSOIDs(repo *repository.Repository) (map
     }
 
     for _, branch := range branches {
-        d.collectOIDsFromRevision(repo, "refs/heads/"+branch, oids)
+        collectOIDsFromRevision(repo, "refs/heads/"+branch, oids)
     }
 
     // Process all tags
@@ -409,14 +395,14 @@ func (d *LFSOrphanDetector) collectRepoLFSOIDs(repo *repository.Repository) (map
     }
 
     for _, tag := range tags {
-        d.collectOIDsFromRevision(repo, "refs/tags/"+tag, oids)
+        collectOIDsFromRevision(repo, "refs/tags/"+tag, oids)
     }
 
     return oids, nil
 }
 
 // collectOIDsFromRevision collects LFS OIDs from specified revision (traversing all commits)
-func (d *LFSOrphanDetector) collectOIDsFromRevision(repo *repository.Repository, rev string, oids map[string]bool) {
+func collectOIDsFromRevision(repo *repository.Repository, rev string, oids map[string]bool) {
     commits, err := repo.Commits(rev, nil)
     if err != nil {
         return
@@ -499,9 +485,13 @@ func (d *LFSOrphanDetector) collectReferencedOIDsParallel(ctx context.Context) (
 
 | File | Function |
 |------|----------|
-| `internal/domain/cleanup/lfs_detector.go` | LFS orphan detection core logic |
-| `internal/domain/cleanup/cleanup_service.go` | Cleanup service (integrating LFS + repository cleanup) |
-| `internal/repo/cleanup_repo.go` | Database queries (get valid repository list) |
+| `internal/domain/cleanup/cleanup_service.go` | Cleanup use-case orchestration |
+| `internal/domain/model/model.go` | `IModelRepo.ListAllPaths` port for valid model repository paths |
+| `internal/domain/dataset/dataset.go` | `IDatasetRepo.ListAllPaths` port for valid dataset repository paths |
+| `internal/domain/git/git.go` | `IGitRepo` cleanup ports for orphan scanning, sizing, and deletion |
+| `internal/repo/model_db.go` | Model database query implementation for valid repository paths |
+| `internal/repo/dataset_db.go` | Dataset database query implementation for valid repository paths |
+| `internal/repo/git_cleanup_repo.go` | Git/LFS filesystem adapter implementation behind `IGitRepo` |
 | `internal/apiserver/handler/cleanup_handler.go` | API Handler |
 
 ### 3. S3/MinIO Object Storage Cleanup (Requires Evaluation)
@@ -606,42 +596,40 @@ func (s *S3LFSCleanup) DeleteObject(ctx context.Context, oid string) error {
 ```protobuf
 // api/proto/v1alpha1/cleanup.proto
 
-service CleanupService {
-  // Get disk usage statistics
-  rpc GetStorageStats(GetStorageStatsRequest) returns (StorageStats);
-
-  // Preview cleanup content (dry-run)
-  rpc PreviewCleanup(PreviewCleanupRequest) returns (CleanupPreview);
+service Cleanup {
+  // Preview orphaned data (dry-run)
+  rpc PreviewCleanup(PreviewCleanupRequest) returns (CleanupPreview) {
+    option (google.api.http) = {
+      post: "/api/v1alpha1/cleanup/preview"
+      body: "*"
+    };
+  }
 
   // Execute cleanup
-  rpc ExecuteCleanup(ExecuteCleanupRequest) returns (CleanupResult);
-}
+  rpc ExecuteCleanup(ExecuteCleanupRequest) returns (CleanupResult) {
+    option (google.api.http) = {
+      post: "/api/v1alpha1/cleanup/execute"
+      body: "*"
+    };
+  }
 
-message StorageStats {
-  int64 total_size_bytes = 1;       // Total used space (bytes)
-  int64 models_size_bytes = 2;      // Models space usage
-  int64 datasets_size_bytes = 3;    // Datasets space usage
-  int64 lfs_size_bytes = 4;         // LFS objects space usage
-  int64 orphaned_size_bytes = 5;    // Orphaned data size
-  int32 session_count = 6;          // Session record count
-  int32 expired_session_count = 7;  // Expired session count
-  int32 sync_task_count = 8;        // Sync task record count
+  // Get storage statistics
+  rpc GetStorageStats(GetStorageStatsRequest) returns (StorageStats) {
+    option (google.api.http) = {
+      get: "/api/v1alpha1/cleanup/stats"
+    };
+  }
 }
 
 message PreviewCleanupRequest {
-  bool include_orphaned_repos = 1;    // Include orphaned repositories
-  bool include_orphaned_lfs = 2;      // Include orphaned LFS
-  bool include_expired_sessions = 3;  // Include expired sessions
-  bool include_old_sync_tasks = 4;    // Include historical sync tasks
-  int32 sync_task_retention_days = 5; // Sync task retention days (default 30)
+  bool include_orphaned_repos = 1;
+  bool include_orphaned_lfs = 2;
 }
 
 message CleanupPreview {
   repeated OrphanedRepo orphaned_repos = 1;
   repeated OrphanedLFS orphaned_lfs_objects = 2;
-  int32 expired_sessions_count = 3;
-  int32 old_sync_tasks_count = 4;
-  int64 total_reclaimable_bytes = 5;
+  int64 total_reclaimable_bytes = 3;
 }
 
 message OrphanedRepo {
@@ -658,21 +646,25 @@ message OrphanedLFS {
 }
 
 message ExecuteCleanupRequest {
-  bool clean_orphaned_repos = 1;      // Clean orphaned repositories
-  bool clean_orphaned_lfs = 2;        // Clean orphaned LFS
-  bool clean_expired_sessions = 3;    // Clean expired sessions
-  bool clean_old_sync_tasks = 4;      // Clean historical sync tasks
-  int32 sync_task_retention_days = 5; // Sync task retention days
-  bool dry_run = 6;                   // Preview only, don't execute
+  bool clean_orphaned_repos = 1;
+  bool clean_orphaned_lfs = 2;
+  bool dry_run = 3;  // true = preview only, no actual deletion
 }
 
 message CleanupResult {
   int32 repos_deleted = 1;           // Number of repositories deleted
   int32 lfs_objects_deleted = 2;     // Number of LFS objects deleted
-  int32 sessions_deleted = 3;        // Number of sessions deleted
-  int32 sync_tasks_deleted = 4;      // Number of sync tasks deleted
-  int64 space_reclaimed_bytes = 5;   // Space reclaimed
-  repeated string errors = 6;        // Error messages
+  int64 space_reclaimed_bytes = 3;   // Space reclaimed
+  repeated string errors = 4;        // Error messages
+}
+
+message GetStorageStatsRequest {}
+
+message StorageStats {
+  int64 total_size_bytes = 1;
+  int64 repositories_size_bytes = 2;
+  int64 lfs_size_bytes = 3;
+  int64 orphaned_size_bytes = 4;
 }
 ```
 
@@ -684,8 +676,16 @@ internal/
 │   └── cleanup/
 │       ├── cleanup.go           # Domain model
 │       └── cleanup_service.go   # Cleanup service
+│   ├── model/
+│   │   └── model.go             # IModelRepo.ListAllPaths
+│   ├── dataset/
+│   │   └── dataset.go           # IDatasetRepo.ListAllPaths
+│   └── git/
+│       └── git.go               # IGitRepo cleanup ports
 ├── repo/
-│   └── cleanup_repo.go          # Database queries
+│   ├── model_db.go              # Model path query implementation
+│   ├── dataset_db.go            # Dataset path query implementation
+│   └── git_cleanup_repo.go  # Git/LFS filesystem scanning, sizing, deletion
 └── apiserver/
     └── handler/
         └── cleanup_handler.go   # API Handler
@@ -697,27 +697,27 @@ internal/
 // internal/domain/cleanup/cleanup_service.go
 
 type CleanupService struct {
-    cleanupRepo ICleanupRepo
-    gitStorage  *gitstorage.Storage
-    dataDir     string
+    modelRepo   model.IModelRepo
+    datasetRepo dataset.IDatasetRepo
+    gitRepo     git.IGitRepo
 }
 
-// FindOrphanedRepos finds orphaned Git repositories
-func (s *CleanupService) FindOrphanedRepos(ctx context.Context) ([]*OrphanedRepo, error) {
-    // 1. Get all models and datasets from database
-    // 2. Build database path set
-    // 3. Traverse disk directory, compare to find orphaned repositories
+// PreviewCleanup previews orphaned repositories and LFS objects without deleting.
+func (s *CleanupService) PreviewCleanup(ctx context.Context, includeRepos, includeLFS bool) (*CleanupPreview, error) {
+    // 1. Get all model paths from model.IModelRepo.ListAllPaths
+    // 2. Get all dataset paths from dataset.IDatasetRepo.ListAllPaths
+    // 3. Delegate repository traversal/comparison to git.IGitRepo.FindOrphanedRepos
+    // 4. Delegate LFS object detection to git.IGitRepo.FindOrphanedLFS
 }
 
-// FindOrphanedLFS finds orphaned LFS objects
-func (s *CleanupService) FindOrphanedLFS(ctx context.Context) ([]*OrphanedLFS, error) {
-    // 1. Collect all referenced LFS OIDs
-    // 2. Scan LFS directory, find unreferenced objects
+// ExecuteCleanup executes cleanup based on options.
+func (s *CleanupService) ExecuteCleanup(ctx context.Context, cleanRepos, cleanLFS bool, dryRun bool) (*CleanupResult, error) {
+    // Preview via domain service, then delegate repository/LFS deletion to git.IGitRepo
 }
 
-// Cleanup executes cleanup
-func (s *CleanupService) Cleanup(ctx context.Context, opts *CleanupOptions) (*CleanupResult, error) {
-    // Execute various cleanups based on options
+// GetStorageStats returns storage statistics.
+func (s *CleanupService) GetStorageStats(ctx context.Context) (*StorageStats, error) {
+    // Delegate storage size calculation to git.IGitRepo and reuse PreviewCleanup for orphaned size
 }
 ```
 
@@ -742,9 +742,13 @@ func (s *CleanupService) Cleanup(ctx context.Context, opts *CleanupOptions) (*Cl
 - `api/proto/v1alpha1/cleanup.proto` - New
 - `internal/domain/cleanup/cleanup.go` - New
 - `internal/domain/cleanup/cleanup_service.go` - New
-- `internal/repo/cleanup_repo.go` - New
+- `internal/domain/model/model.go` - Modify (add `IModelRepo.ListAllPaths`)
+- `internal/domain/dataset/dataset.go` - Modify (add `IDatasetRepo.ListAllPaths`)
+- `internal/domain/git/git.go` - Modify (add cleanup scanning/sizing/deletion methods to `IGitRepo`)
+- `internal/repo/model_db.go` - Modify (implement `ListAllPaths`)
+- `internal/repo/dataset_db.go` - Modify (implement `ListAllPaths`)
+- `internal/repo/git_cleanup_repo.go` - New (filesystem/git/LFS cleanup adapter methods on `*gitRepo`)
 - `internal/apiserver/handler/cleanup_handler.go` - New
-- `internal/repo/repos.go` - Modify (add cleanup repo)
 - `internal/apiserver/apiserver.go` - Modify (register cleanup handler)
 
 ### Phase 2: Session and Task Cleanup
@@ -771,7 +775,8 @@ func (s *CleanupService) Cleanup(ctx context.Context, opts *CleanupOptions) (*Cl
 
 ```bash
 go test ./internal/domain/cleanup/...
-go test ./internal/repo/cleanup_repo_test.go
+go test ./internal/repo/...
+go test ./internal/apiserver/middleware/...
 ```
 
 ### Integration Tests
@@ -790,7 +795,7 @@ make local-run-api
 
 # 2. Create test data
 # 3. Call cleanup preview via API
-curl http://localhost:3001/apis/v1alpha1/cleanup/stats
+curl http://localhost:3001/api/v1alpha1/cleanup/stats
 # Preview orphaned data
 curl -X POST http://localhost:3001/api/v1alpha1/cleanup/preview \
 -H "Content-Type: application/json" \

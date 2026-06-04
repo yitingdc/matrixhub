@@ -131,7 +131,7 @@ func (f *fakeGitRepo) FindOrphanedLFS(context.Context) ([]*git.OrphanedLFS, erro
 	return f.orphanedLFS, nil
 }
 
-func (f *fakeGitRepo) DeleteRepo(_ context.Context, path string) error {
+func (f *fakeGitRepo) DeleteRepositoryAtRelPath(_ context.Context, path string) error {
 	f.deletedRepos = append(f.deletedRepos, path)
 	return nil
 }

@@ -14,28 +14,12 @@
 
 package cleanup
 
-// OrphanedRepo represents an orphaned Git repository on disk
-// that has no corresponding record in the database.
-type OrphanedRepo struct {
-	Path         string // Relative path from repositories directory
-	Type         string // "model" or "dataset"
-	ProjectName  string
-	ResourceName string
-	SizeBytes    int64
-}
-
-// OrphanedLFS represents an orphaned LFS object on disk
-// that is not referenced by any Git repository.
-type OrphanedLFS struct {
-	OID       string // SHA256 hash
-	SizeBytes int64
-	Path      string // File system path
-}
+import "github.com/matrixhub-ai/matrixhub/internal/domain/git"
 
 // CleanupPreview contains preview results for orphaned data.
 type CleanupPreview struct {
-	OrphanedRepos      []*OrphanedRepo
-	OrphanedLFSObjects []*OrphanedLFS
+	OrphanedRepos      []*git.OrphanedRepo
+	OrphanedLFSObjects []*git.OrphanedLFS
 	TotalReclaimable   int64
 }
 
