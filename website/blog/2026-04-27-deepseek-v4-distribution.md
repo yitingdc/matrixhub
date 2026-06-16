@@ -143,10 +143,10 @@ How it works:
 Request -> MatrixHub -> Hugging Face -> Response
 ```
 
-![](./images/registry1.PNG)
-![](./images/registry2.PNG)
-![](./images/registry3.PNG)
-![](./images/registry4.PNG)
+![Platform settings](./images/registry1.PNG)
+![Registry management](./images/registry2.PNG)
+![Create registry](./images/registry-create.png)
+![Registry list](./images/registry-list.png)
 
 ### Step 4: Create a proxy project
 
@@ -161,16 +161,17 @@ When creating the project:
 - Select the `huggingface` remote registry
 - Specify the model organization: `deepseek-ai`
 
-![](./images/project1.PNG)
-![](./images/project2.png)
-![](./images/project3.png)
-![](./images/project4.png)
+![Create project 1](./images/project1.PNG)
+![Create project](./images/project-create.png)
+![Project list](./images/project-list.png)
 
 ### Step 5: Client integration
 
 ```bash
 export HF_ENDPOINT="http://127.0.0.1:3001"
 ```
+
+![Client integration](./images/client1.png)
 
 What this does:
 
@@ -181,15 +182,47 @@ What this does:
 
 ### Step 6: Download the model
 
+#### 6.1 Start the download
+
 ```bash
 hf download deepseek-ai/DeepSeek-V4-Pro
 ```
-![](./images/download1.png)
 
-You can see 'DeepSeek-V4-Pro' model under 'deepseek-ai' Project in UI
+#### 6.2 First node: populate the cache
 
-![](./images/download.png)
+In our test environment, the first download took **6 hours and 56 minutes**. This initial request fetched the model from the upstream Hugging Face source and populated the MatrixHub cache. Replace <abbr title="Replace this with your actual MatrixHub service address"><code>http://x.x.x.x:3001</code></abbr> with your actual MatrixHub service address.
 
+```bash
+root@node1:/data/matrixhub# export HF_ENDPOINT="http://x.x.x.x:3001"
+root@node1:/data/matrixhub# export HF_HUB_DOWNLOAD_TIMEOUT=120
+root@node1:/data/matrixhub# nohup time -p hf download deepseek-ai/DeepSeek-V4-Pro --local-dir /data/matrixhub/deepseek-v4
+```
+
+![First download](./images/first-download.png)
+
+#### 6.3 Second node: reuse the cached model
+
+The second download, from another node in the same internal network, completed in **86 minutes** because the model files were already cached by MatrixHub.
+
+```bash
+root@node2:/data/matrixhub# export HF_ENDPOINT="http://x.x.x.x:3001"
+root@node2:/data/matrixhub# export HF_HUB_DOWNLOAD_TIMEOUT=120
+root@node2:/data/matrixhub# time hf download deepseek-ai/DeepSeek-V4-Pro --local-dir /data/matrixhub/deepseek-v4
+```
+
+![Second download](./images/secondary-download.png)
+
+#### 6.4 Verify the model in the UI
+
+After the download finishes, you can see the `DeepSeek-V4-Pro` model under the `deepseek-ai` project in the UI.
+
+![Model list](./images/model-list.png)
+
+#### 6.5 Inspect cached model files
+
+Open the model details page to inspect the cached files and verify that the artifacts are available for internal distribution.
+
+![Model details](./images/model-detail.png)
 
 ## Verify cache effectiveness
 

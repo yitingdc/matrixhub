@@ -143,10 +143,10 @@ Type: HuggingFace
 请求 -> MatrixHub -> Hugging Face -> 回源
 ```
 
-![远程仓库1](./images/registry1.PNG)
-![远程仓库2](./images/registry2.PNG)
-![远程仓库3](./images/registry3.PNG)
-![远程仓库4](./images/registry4.PNG)
+![平台设置](./images/registry1.PNG)
+![远程仓库管理](./images/registry2.PNG)
+![创建远程仓库](./images/registry-create.png)
+![远程仓库列表](./images/registry-list.png)
 
 ### Step 4：创建 Proxy 项目
 
@@ -162,14 +162,17 @@ Type: HuggingFace
 - 填写代理模型组织：`deepseek-ai`
 
 ![创建项目1](./images/project1.PNG)
-![创建项目2](./images/project2.png)
+![创建项目](./images/project-create.png)
+![项目列表](./images/project-list.png)
 
 ### Step 5：客户端接入
 
 ```bash
 export HF_ENDPOINT="http://127.0.0.1:3001"
 ```
-![客户端1](./images/client1.png)
+
+![客户端接入](./images/client1.png)
+
 本质上是在做这几件事：
 
 - 劫持客户端请求
@@ -177,16 +180,49 @@ export HF_ENDPOINT="http://127.0.0.1:3001"
 - 自动缓存到本地
 - 后续请求全部走内网
 
-
 ### Step 6：下载模型
+
+#### 6.1 开始下载
 
 ```bash
 hf download deepseek-ai/DeepSeek-V4-Pro
 ```
-![客户端2](./images/download1.png)
 
-下载完成后，进入‘deepseek-ai' 项目可以看到 DeepSeek-V4-Pro 模型在页面上出现.
-![下载](./images/download.png)
+#### 6.2 第一台节点：填充缓存
+
+在我们的测试环境中，第一次下载耗时 **6 小时 56 分钟**。这次初始请求会从上游 Hugging Face 拉取模型，并将模型文件写入 MatrixHub 缓存。请将 <abbr title="请替换为实际的 MatrixHub 服务地址"><code>http://x.x.x.x:3001</code></abbr> 替换为实际的 MatrixHub 服务地址。
+
+```bash
+root@node1:/data/matrixhub# export HF_ENDPOINT="http://x.x.x.x:3001"
+root@node1:/data/matrixhub# export HF_HUB_DOWNLOAD_TIMEOUT=120
+root@node1:/data/matrixhub# nohup time -p hf download deepseek-ai/DeepSeek-V4-Pro --local-dir /data/matrixhub/deepseek-v4
+```
+
+![首次下载](./images/first-download.png)
+
+#### 6.3 第二台节点：复用已缓存模型
+
+第二次下载来自同一内网中的另一台节点，由于模型文件已经被 MatrixHub 缓存，下载耗时缩短到 **86 分钟**。
+
+```bash
+root@node2:/data/matrixhub# export HF_ENDPOINT="http://x.x.x.x:3001"
+root@node2:/data/matrixhub# export HF_HUB_DOWNLOAD_TIMEOUT=120
+root@node2:/data/matrixhub# time hf download deepseek-ai/DeepSeek-V4-Pro --local-dir /data/matrixhub/deepseek-v4
+```
+
+![第二次下载](./images/secondary-download.png)
+
+#### 6.4 在 UI 中验证模型
+
+下载完成后，可以在 UI 的 `deepseek-ai` 项目下看到 `DeepSeek-V4-Pro` 模型。
+
+![模型列表](./images/model-list.png)
+
+#### 6.5 查看缓存的模型文件
+
+进入模型详情页，可以查看已经缓存的模型文件，并确认这些制品已经可以在内网中分发。
+
+![模型详情](./images/model-detail.png)
 
 ## 验证缓存是否生效
 
