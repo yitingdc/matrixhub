@@ -36,6 +36,7 @@ import (
 
 	"github.com/matrixhub-ai/matrixhub/internal/domain/git"
 	"github.com/matrixhub-ai/matrixhub/internal/domain/role"
+	"github.com/matrixhub-ai/matrixhub/internal/infra/authcodec"
 )
 
 const (
@@ -53,6 +54,14 @@ func requestOrigin(r *http.Request) string {
 		scheme = fwdProto
 	}
 	return fmt.Sprintf("%s://%s", scheme, r.Host)
+}
+
+func commitAuthorName(user authenticate.UserInfo) string {
+	identity, err := authcodec.Unmarshal(user.User)
+	if err == nil && identity.GetName() != "" {
+		return identity.GetName()
+	}
+	return user.User
 }
 
 // handleValidateYAML handles POST /api/validate-yaml
@@ -161,7 +170,7 @@ func (h *Handler) handleCreateRepo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create initial commit with default .gitattributes
-	_, err = repo.CreateCommit(context.Background(), defaultBranch, "Initial commit", user.User, user.Email, []repository.CommitOperation{
+	_, err = repo.CreateCommit(context.Background(), defaultBranch, "Initial commit", commitAuthorName(user), user.Email, []repository.CommitOperation{
 		{
 			Type:    repository.CommitOperationAdd,
 			Path:    repository.GitattributesFileName,
@@ -398,7 +407,7 @@ func (h *Handler) handleCommit(w http.ResponseWriter, r *http.Request) {
 	}
 	commit := &git.Commit{
 		Message:      message,
-		AuthorName:   user.User,
+		AuthorName:   commitAuthorName(user),
 		AuthorEmail:  user.Email,
 		ParentCommit: header.ParentCommit,
 	}

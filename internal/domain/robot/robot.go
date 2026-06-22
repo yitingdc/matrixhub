@@ -59,6 +59,14 @@ func (r Robot) CheckTokenHash(hash string) bool {
 	return r.TokenHash == hash
 }
 
+func (r Robot) IsValid(t time.Time) bool {
+	return r.Enabled && !r.IsExpired(t)
+}
+
+func (r Robot) IsExpired(t time.Time) bool {
+	return r.ExpireAt != nil && r.ExpireAt.Before(t)
+}
+
 type RobotPoject struct {
 	ID        int `gorm:"primary_key"`
 	RobotId   int

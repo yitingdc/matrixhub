@@ -19,6 +19,7 @@ import (
 	"errors"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/matrixhub-ai/matrixhub/internal/domain/auth"
 	"github.com/matrixhub-ai/matrixhub/internal/domain/robot"
@@ -47,7 +48,7 @@ func (a *RobotTokenAuthenticator) AuthenticateToken(ctx context.Context, _, toke
 	if err != nil {
 		return nil, err
 	}
-	if rb == nil || !rb.Enabled {
+	if rb == nil || !rb.IsValid(time.Now()) {
 		return nil, errors.New("robot is invalid")
 	}
 

@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/matrixhub-ai/matrixhub/internal/domain/auth"
 	"github.com/matrixhub-ai/matrixhub/internal/domain/robot"
@@ -49,8 +50,8 @@ func (a *RobotAuthenticator) AuthenticateToken(ctx context.Context, username, to
 	if err != nil {
 		return nil, fmt.Errorf("robot account not found: %w", err)
 	}
-	if !rb.Enabled {
-		return nil, fmt.Errorf("robot account is disabled: %s", username)
+	if !rb.IsValid(time.Now()) {
+		return nil, fmt.Errorf("robot account is invalid: %s", username)
 	}
 	if !rb.CheckTokenHash(utils.Sha256Hex(token)) {
 		return nil, fmt.Errorf("invalid robot token: %w", err)

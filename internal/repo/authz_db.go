@@ -23,6 +23,7 @@ import (
 
 	"github.com/matrixhub-ai/matrixhub/internal/domain/authz"
 	"github.com/matrixhub-ai/matrixhub/internal/domain/project"
+	"github.com/matrixhub-ai/matrixhub/internal/domain/robot"
 	"github.com/matrixhub-ai/matrixhub/internal/domain/role"
 )
 
@@ -81,6 +82,12 @@ func (r *AuthzDBRepo) GetUserPlatformPermissions(ctx context.Context, userID int
 func (r *AuthzDBRepo) GetRobotProjectPermissions(ctx context.Context, robotID int, projectID int) ([]role.Permission, error) {
 	var result struct {
 		Permissions datatypes.JSONSlice[role.Permission]
+	}
+	var rb robot.Robot
+	if err := r.db.WithContext(ctx).Table("robots").Where("id = ?", robotID).First(&rb).Error; err != nil {
+		return nil, err
+	} else if rb.ProjectScope == robot.ProjectScopeAll {
+		return rb.ProjectPermissions, nil
 	}
 	err := r.db.WithContext(ctx).
 		Table("robots").

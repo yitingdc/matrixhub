@@ -216,6 +216,7 @@ func (r *RobotHandler) UpdateRobotAccount(ctx context.Context, request *v1alpha1
 	rb.PlatformPermissions = platformPermissions
 	rb.ProjectPermissions = projectPermissions
 	rb.ProjectScope = scope
+	rb.Enabled = request.Status == v1alpha1.RobotAccountStatus_ROBOT_ACCOUNT_STATUS_ENABLED
 
 	if int(request.ExpireDays) != rb.Duration {
 		if request.ExpireDays == 0 {

@@ -37,7 +37,24 @@ func (r *robotRepo) GetRobotByName(ctx context.Context, name string) (*robot.Rob
 }
 
 func (r *robotRepo) UpdateRobot(ctx context.Context, robot *robot.Robot) error {
-	return r.db.WithContext(ctx).Where("id = ?", robot.ID).Updates(robot).Error
+	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(robot).
+			Where("id = ?", robot.ID).
+			Updates(map[string]interface{}{
+				"description":          robot.Description,
+				"enabled":              robot.Enabled,
+				"expire_at":            robot.ExpireAt,
+				"duration":             robot.Duration,
+				"token_hash":           robot.TokenHash,
+				"project_scope":        robot.ProjectScope,
+				"platform_permissions": robot.PlatformPermissions,
+				"project_permissions":  robot.ProjectPermissions,
+			}).Error; err != nil {
+			return err
+		}
+
+		return tx.Model(robot).Association("Projects").Replace(robot.Projects)
+	})
 }
 
 func (r *robotRepo) CreateRobot(ctx context.Context, robot *robot.Robot) error {
