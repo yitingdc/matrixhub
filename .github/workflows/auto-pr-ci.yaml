@@ -73,9 +73,9 @@ jobs:
             echo "RUN_TAG=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
             if ${{ steps.filter_pr.outputs.all_e2e == 'true' }} ; then
                 # run all e2e
-                echo "RUN_E2E_LABEL=all" >> $GITHUB_ENV
+                echo "RUN_E2E_LABELS=all" >> $GITHUB_ENV
             else
-                echo "RUN_E2E_LABEL=smoke" >> $GITHUB_ENV
+                echo "RUN_E2E_LABELS=smoke" >> $GITHUB_ENV
             fi
             echo "RUN_E2E_ENABLED=${{ steps.filter_pr.outputs.run_e2e }}" >> $GITHUB_ENV
             echo "RUN_UNITTEST_ENABLED=true" >> $GITHUB_ENV
