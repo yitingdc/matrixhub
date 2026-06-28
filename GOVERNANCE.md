@@ -10,7 +10,7 @@ MatrixHub is an open-source, self-hosted model registry and distribution system 
 - Private deployment, caching, governance, replication, and air-gapped workflows
 - Cloud-native operation (Kubernetes, Helm, object storage)
 
-Out of scope items are tracked in the project roadmap and product direction; large changes should be discussed in issues before substantial implementation.
+Out of scope items are tracked in the [public roadmap](docs/roadmap.md) and discussed in GitHub issues or [Discussions](https://github.com/matrixhub-ai/matrixhub/discussions); large changes should be discussed there before substantial implementation.
 
 ## Roles
 
@@ -20,12 +20,14 @@ Anyone may contribute via issues, documentation, and pull requests under the [Co
 
 ### Maintainers
 
-Maintainers are listed in [MAINTAINERS.md](MAINTAINERS.md). They are responsible for:
+Maintainers are listed in [MAINTAINERS.md](MAINTAINERS.md). They hold merge authority and are responsible for:
 
 - Reviewing and merging pull requests
 - Cutting releases and publishing artifacts
 - Triaging issues and security reports ([SECURITY.md](SECURITY.md))
 - Upholding project quality, inclusivity, and technical direction
+
+The [OWNERS](OWNERS) file defines GitHub review labels (`/approve`, `/lgtm`) for day-to-day pull requests. The maintainer list in [MAINTAINERS.md](MAINTAINERS.md) is the source of truth for project leadership; approvers and reviewers in `OWNERS` should stay aligned with active maintainers.
 
 ### Emeritus maintainers
 
@@ -55,9 +57,17 @@ Removal or emeritus status follows the same process when a maintainer is inactiv
 - Release notes summarize user-visible changes and security fixes.
 - Maintainers decide release timing and versioning (semver where applicable).
 
+## Vendor neutrality
+
+MatrixHub is a community-led open source project. Technical direction, release priorities, and acceptance of contributions are decided in the interest of the project and its users—not to favor a single vendor, employer, or commercial offering.
+
+- Maintainers and contributors may work for different organizations; affiliation is disclosed in [MAINTAINERS.md](MAINTAINERS.md) and does not confer special control.
+- Commercial support, hosted services, or enterprise packaging built around MatrixHub are separate from the core repository. Features intended for the community are developed in public issues and pull requests on the default branch.
+- No single company may block community consensus on project direction, governance, or CNCF participation.
+
 ## Code of Conduct
 
-All participants must follow the [MatrixHub Code of Conduct](CODE_OF_CONDUCT.md). Maintainers may warn, moderate, or ban contributors for violations, consistent with that policy and platform rules (GitHub, CNCF Slack).
+All participants must follow the [MatrixHub Code of Conduct](CODE_OF_CONDUCT.md), which adopts the [CNCF Code of Conduct](https://github.com/cncf/foundation/blob/main/code-of-conduct.md). Violations may be reported to the maintainers or to the CNCF Code of Conduct Committee at <conduct@cncf.io>. Maintainers may warn, moderate, or ban contributors for violations, consistent with that policy and platform rules (GitHub, CNCF Slack).
 
 ## Security
 
@@ -65,8 +75,8 @@ Security reporting and response are defined in [SECURITY.md](SECURITY.md). Maint
 
 ## Intellectual property
 
-- Contributions are accepted under the project’s [Apache License 2.0](LICENSE).
-- Contributors should sign commits per project contribution requirements (for example DCO when enabled).
+- Contributions are accepted under the project’s [Apache License 2.0](LICENSE) (inbound = outbound).
+- Contributors must sign off their commits under the [Developer Certificate of Origin (DCO)](https://developercertificate.org/); see [CONTRIBUTING.md](CONTRIBUTING.md).
 - Trademark and project asset policies may change if the project joins the CNCF; such changes will be announced to the community.
 
 ## Communication
@@ -78,7 +88,3 @@ Security reporting and response are defined in [SECURITY.md](SECURITY.md). Maint
 ## Amending this document
 
 Changes to `GOVERNANCE.md` require a pull request approved by at least **two-thirds of active maintainers**, with a **7-day** comment period for other maintainers and the community.
-
----
-
-_This governance model is a starting template. Replace `TODO` entries in [MAINTAINERS.md](MAINTAINERS.md) before submitting a CNCF Sandbox application._
