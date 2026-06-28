@@ -13,13 +13,11 @@ The requirements are detailed in the parent issue.
 
 ---
 
-**Completion requirements**:
-
-It requires the following artifacts:
+**Completion checklist**:
 
 - [ ] **Technical design (doc)**: <!-- link the design/approach; get maintainer review before coding -->
 - [ ] **UT** <!-- unit tests for new domain/jobserver logic; patch coverage gate must pass -->
 - [ ] **E2E** <!-- relevant e2e scenarios pass (smoke or targeted) -->
 - [ ] **API change**: <!-- list new/changed proto or HTTP APIs, or "none" -->
 
-The artifacts above should be linked in this issue or the associated PR.
+The artifacts above should be described or linked in this checklist or the associated PR.

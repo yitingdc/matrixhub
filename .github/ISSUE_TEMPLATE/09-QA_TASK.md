@@ -13,12 +13,10 @@ The requirements are detailed in the parent issue.
 
 ---
 
-**Completion requirements**:
-
-It requires the following artifacts:
+**Completion checklist**:
 
 - [ ] **Test Cases**: <!-- link the test cases / scenarios to be covered -->
 - [ ] **Manual Test** <!-- manual verification steps performed, with results -->
-- [ ] **Verify user docs** <!-- follow the user-facing documentation and confirm the steps/examples are accurate and work -->
+- [ ] **Adjust and verify user docs** <!-- follow the user-facing documentation and confirm the steps/examples are accurate and work; user doc link is in the Doc task or Backend task -->
 
-The artifacts above should be linked in this issue or the associated PR.
+The artifacts above should be described or linked in this checklist or the associated PR.

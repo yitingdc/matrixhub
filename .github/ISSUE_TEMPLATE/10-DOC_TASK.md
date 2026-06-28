@@ -13,10 +13,8 @@ The requirements are detailed in the parent issue.
 
 ---
 
-**Completion requirements**:
-
-It requires the following artifacts:
+**Completion checklist**:
 
 - [ ] **Final user doc link**: <!-- paste the URL of the published/merged user-facing usage documentation -->
 
-The final user documentation link above is required before this subtask can be closed.
+The artifacts above should be described or linked in this checklist.

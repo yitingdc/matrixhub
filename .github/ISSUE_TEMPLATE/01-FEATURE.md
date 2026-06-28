@@ -10,13 +10,11 @@ labels: kind/feature
 
 **Why is this needed**:
 
-**Completion requirements**:
-
-This feature requires the following artifacts:
+**Completion checklist**:
 
 - [ ] Design doc
 - [ ] API change
 - [ ] Test
 - [ ] Docs update
 
-The artifacts should be linked in subsequent comments.
+The artifacts above should be described or linked in this checklist or the associated PR/issues.
