@@ -183,7 +183,7 @@ kubectl -n dynamo-system exec <前端Pod名> -- curl -s http://localhost:8000/v1
 
 ## 实验数据对比（首次下载模型时间对比）
 
-针对「内网部署了 MatrixHub 且已缓存了模型」和「没有部署 MatrixHub」两种情况，各环节实测耗时参考（`qwen3-0.6b` 模型），**Dynamo 首次下载模型时间对比见下表**：
+针对「内网部署了 MatrixHub 且已缓存了模型」和「没有部署 MatrixHub」两种情况，各环节实测耗时参考（`qwen3-0.6b` 模型），**首次下载模型时间对比见下表**：
 
 | 环节 | 实验一（内网 MatrixHub 且已缓存模型） | 实验二（没有部署 MatrixHub） |
 |---|---|---|

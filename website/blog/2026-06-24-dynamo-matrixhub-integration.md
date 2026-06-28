@@ -183,7 +183,7 @@ Without MatrixHub (downloading from public Hugging Face), the logs show the mode
 
 ## Results: first-download time comparison
 
-Measured per-stage timings for the two cases — "internal MatrixHub with the model pre-cached" vs. "no MatrixHub" — using the `qwen3-0.6b` model. **Dynamo's first-download comparison is shown below:**
+Measured per-stage timings for the two cases — "internal MatrixHub with the model pre-cached" vs. "no MatrixHub" — using the `qwen3-0.6b` model. **The first-download comparison is shown below:**
 
 | Stage | Experiment 1 (internal MatrixHub, model cached) | Experiment 2 (no MatrixHub) |
 |---|---|---|
