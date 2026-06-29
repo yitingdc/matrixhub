@@ -85,6 +85,20 @@ available, and ask reporters to observe an embargo of up to **90 days** from the
 initial report before public disclosure, to give users time to upgrade. We are happy
 to coordinate timing with the reporter and other affected projects.
 
+## Automated security scanning
+
+MatrixHub runs the following checks in CI:
+
+| Check | Scope | Workflow | Output |
+|-------|-------|----------|--------|
+| **govulncheck** | Go dependencies & stdlib | `govulncheck.yml` | PR check (blocks on known vulns) |
+| **CodeQL** | Go + JS/TS static analysis | `codeql.yml` | GitHub Security tab (SARIF) |
+| **Trivy** | Container image CVEs | `call-release-image.yaml` | GitHub Security tab (SARIF) |
+| **Dependabot** | Go, npm, Actions, Docker | `dependabot.yml` | Automated PRs + security alerts |
+| **Cosign + SBOM** | Release images | `call-release-image.yaml` | Signed images with SPDX SBOM |
+
+All scanning workflows start **non-blocking** (report-only). After initial triage they are promoted to required checks on `main`.
+
 ## Security hardening (operators)
 
 MatrixHub is often deployed on private networks. Operators should:
