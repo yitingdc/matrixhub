@@ -1,10 +1,8 @@
 name: Call Release Changelog
 
 env:
-  SCRIPT_PATH: "./scripts/changelog.sh"
-  LABEL_FEATURE: "release/feature-new"
-  LABEL_CHANGED: "release/feature-changed"
-  LABEL_BUG: "release/bug"
+  RELEASE_NOTES_SCRIPT: "./scripts/release-notes.sh"
+
 on:
   workflow_call:
     inputs:
@@ -23,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       dest_tag: ${{ env.dest_tag }}
-      begin_tag: ${{ env.begin_tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,31 +45,21 @@ jobs:
           fi
           echo "RUN_dest_tag=${dest_tag}" >> $GITHUB_ENV
 
-      - name: Generate Changelog
+      - name: Generate Release Notes
         run: |
           set -x
-          export LABEL_FEATURE=${{ env.LABEL_FEATURE }}
-          export LABEL_CHANGED=${{ env.LABEL_CHANGED }}
-          export LABEL_BUG=${{ env.LABEL_BUG }}
-          export PROJECT_REPO=${{ github.repository }}
-          export GH_TOKEN=${{ github.token }}
           mkdir changelog
-          ${{ env.SCRIPT_PATH }} ./changelog ${{ env.RUN_dest_tag }} \
-            || { echo "error, failed to generate changelog " ; exit 1 ; }
-          FILE_NAME=` ls changelog `
-          [ -n "$FILE_NAME" ] || { echo "error, failed to find changelog " ; exit 2 ; }
-          #
-          TMP=` echo ${FILE_NAME%.*}`
-          begin_tag=`awk -F'_' '{print $3}' <<< "${TMP}" `
-          dest_tag=`awk -F'_' '{print $5}' <<< "${TMP}" `
-          echo "dest_tag=${dest_tag}" >> $GITHUB_ENV
-          echo "begin_tag=${begin_tag}" >> $GITHUB_ENV
-          FILE_PATH=` echo ${PWD}/changelog/${FILE_NAME} `
+          ${{ env.RELEASE_NOTES_SCRIPT }} ./changelog ${{ env.RUN_dest_tag }} \
+            || { echo "error, failed to generate release notes " ; exit 1 ; }
+          FILE_NAME=$(ls changelog)
+          [ -n "$FILE_NAME" ] || { echo "error, failed to find release notes " ; exit 2 ; }
+          echo "dest_tag=${{ env.RUN_dest_tag }}" >> $GITHUB_ENV
+          FILE_PATH="${PWD}/changelog/${FILE_NAME}"
           echo "FILE_PATH=${FILE_PATH}" >> $GITHUB_ENV
           echo "------------------------------------"
-          cat ${FILE_PATH}
+          cat "${FILE_PATH}"
 
-      - name: Upload Changelog
+      - name: Upload Release Notes
         uses: actions/upload-artifact@v4.6.0
         with:
           name: changelog_artifact_${{ env.RUN_dest_tag }}

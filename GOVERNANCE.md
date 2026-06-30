@@ -54,7 +54,8 @@ Removal or emeritus status follows the same process when a maintainer is inactiv
 ## Releases
 
 - Releases are tagged from the default branch following project quality checks (CI, review).
-- Release notes summarize user-visible changes and security fixes.
+- **Release notes are published only for official semver tags (`vX.Y.Z`).** RC and dev tags produce container images and Helm charts only; they do not create GitHub Releases or changelog entries.
+- Contributors record user-visible changes in pull request `release-note` blocks; maintainers aggregate them at official release time (Kubernetes-style). See [Release process](docs/release-process.md).
 - Maintainers decide release timing and versioning (semver where applicable).
 
 ## Vendor neutrality

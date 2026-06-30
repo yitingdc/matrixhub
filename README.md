@@ -144,9 +144,11 @@ helm install matrixhub oci://ghcr.io/matrixhub-ai/matrixhub \
 
 - [Documentation site](https://matrixhub.ai)
 - [Development guide](docs/development.md)
+- [Release notes (CHANGELOG)](CHANGELOG/README.md)
 
 ## Project governance
 
+- [Release process](docs/release-process.md)
 - [Maintainers](MAINTAINERS.md)
 - [Governance](GOVERNANCE.md)
 - [Security policy](SECURITY.md)
