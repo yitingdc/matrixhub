@@ -68,6 +68,8 @@ Typical flow:
 3. Tag `vX.Y.Z` on the RC commit (promotion) or on a later `main` commit (if additional fixes landed).
 4. Continue development on `main`; cut `vX.Y.(Z+1)` for patch fixes.
 
+A **release branch** (for example `release/0.1`) is **not** required for the first GA or for routine releases from `main`. Create one only when you need a [cherry-pick patch release](#cherry-pick-patch-release) that excludes new features already on `main`.
+
 ## Automated release pipeline
 
 Pushing a semver tag (or running the [Release workflow](https://github.com/matrixhub-ai/matrixhub/actions/workflows/release.yml) manually) triggers [`.github/workflows/release.yml`](../.github/workflows/release.yml).
@@ -81,10 +83,12 @@ For **every** tag (`-dev`, `-rc`, and official):
 
 For **official** tags only (`vX.Y.Z` without `-rc` / `-dev`):
 
-5. Build release notes from merged PR `release-note` blocks (see below; automation is being aligned with this policy)
+5. Build release notes from [`CHANGELOG/`](../CHANGELOG/) via [`scripts/release-notes.sh`](../scripts/release-notes.sh)
 6. Create a **draft** [GitHub Release](https://github.com/matrixhub-ai/matrixhub/releases) with the release notes and Helm chart `.tgz` attached
 
-Maintainers must **review and publish** the draft release manually. Until automation is fully migrated, bootstrap or edit release notes in [`CHANGELOG/`](../CHANGELOG/) and paste the official section into the draft release body.
+Maintainers must **review and publish** the draft release manually.
+
+`scripts/release-notes.sh` reads the matching section from `CHANGELOG/CHANGELOG-X.Y.md`. If the tagged commit does not yet contain that file (for example when promoting `v0.1.0` on the same commit as `v0.1.0-rc.1`), the script falls back to `origin/main` for the changelog content. **Always verify the draft release body** before publishing — see [Promoting an RC on the same commit](#promoting-an-rc-on-the-same-commit).
 
 ### Adding release notes in pull requests
 
@@ -197,6 +201,21 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
+#### Promoting an RC on the same commit
+
+When the official tag points at the **same commit** as the last RC (for example `v0.1.0` on `v0.1.0-rc.1`):
+
+- Container images and Helm charts are rebuilt with the official tag name.
+- GitHub Actions runs the workflow definitions **from the tagged commit**. If release automation was merged to `main` after that commit, the draft release body may be wrong or empty until `scripts/release-notes.sh` on `main` is used.
+- **Before publishing:** confirm the draft body matches the `CHANGELOG/` section for this version (from `main`). Update with `gh release edit` if needed:
+
+```bash
+./scripts/release-notes.sh /tmp/release-notes v0.1.0
+gh release edit v0.1.0 --notes-file /tmp/release-notes/release_notes_v0.1.0.md
+```
+
+For `v0.1.1` and later, tagging the current `main` HEAD avoids this mismatch because the tag commit includes current workflow and changelog files.
+
 #### Verify the pipeline
 
 Confirm the Release workflow completes: image, chart, release-notes artifact (if generated), and draft GitHub Release are created.
@@ -212,7 +231,16 @@ This step is **only for official tags**. It is what makes release notes visible 
 3. Confirm the Helm chart `.tgz` is attached.
 4. Click **Publish release**.
 
-After publish, users see release notes on the Releases page; the same content should live under `CHANGELOG/` in the repo for a permanent record.
+After publish, users see release notes on the [GitHub Releases](https://github.com/matrixhub-ai/matrixhub/releases) tab; the same content should live under `CHANGELOG/` in the repo for a permanent record.
+
+#### Editing release notes after publish
+
+Release notes are not tied to the container image digest or git tag object. Maintainers may fix typos, add missing items, or clarify upgrade guidance **after** a release is published:
+
+1. Edit the GitHub Release body on the Releases page, **and**
+2. Open a PR to update the matching section in `CHANGELOG/CHANGELOG-X.Y.md` so the repo stays the source of truth.
+
+Prefer finalizing notes before publish; post-publish edits should be limited to corrections and clarifications.
 
 Suggested release notes footer (adjust version):
 

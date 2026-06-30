@@ -188,6 +188,8 @@ See [docs/development.md](docs/development.md) for prerequisites.
 - Keep PRs focused and reasonably small; link the issue they address.
 - Ensure **CI is green** (lint, unit tests, and other checks) and that your commits
   are **signed off**.
+- Fill in the PR template `release-note` block for user-visible changes (see
+  [Release notes in pull requests](#release-notes-in-pull-requests)).
 - Reviews follow the [`OWNERS`](OWNERS) model: maintainers use `/lgtm` and `/approve`
   on PRs. A PR is merged once it has the required approvals and CI passes.
 - Be responsive to review feedback; maintainers aim to review promptly but this is a
@@ -195,6 +197,28 @@ See [docs/development.md](docs/development.md) for prerequisites.
 
 See [GOVERNANCE.md](GOVERNANCE.md) for roles, decision making, and how to become a
 maintainer.
+
+## Release notes in pull requests
+
+MatrixHub follows the [Kubernetes release notes model](https://github.com/kubernetes/community/blob/main/contributors/guide/release-notes.md):
+
+- **Official releases only** (`vX.Y.Z`) publish release notes on the
+  [GitHub Releases](https://github.com/matrixhub-ai/matrixhub/releases) page and in
+  [`CHANGELOG/`](CHANGELOG/README.md). RC and dev tags do **not** publish release notes.
+- **Every pull request** with a user-visible change must include a `release-note`
+  block in the PR description (or `NONE` if not user-facing). The PR template already
+  includes this section.
+- Reviewers should check release note quality during review (clear, past tense,
+  user-focused).
+
+Example:
+
+```release-note
+Added permission-based filtering to the project list API. (#664, @contributor)
+```
+
+Maintainers aggregate these notes into `CHANGELOG/` when cutting an official release.
+See [Release process](docs/release-process.md) for maintainer steps.
 
 ## License of contributions
 
