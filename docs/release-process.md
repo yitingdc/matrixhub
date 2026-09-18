@@ -187,6 +187,14 @@ Create the draft around feature freeze or the first RC:
 7. If validation fails, fix the reported PR metadata and rerun. Rerun again after
    late fixes, then mark the PR ready and merge it before creating the official tag.
 
+The workflow opens a **same-repository** draft PR
+(`release-notes/vX.Y.Z` → `base_branch`), not a fork PR. That is an intentional
+bot exception, like Dependabot: the
+[branch-creation ruleset](https://github.com/matrixhub-ai/matrixhub/rules/13536899)
+must keep `refs/heads/release-notes/**` in its exclude list so Actions can push
+the notes branch. Do not rename it to `release-*`; those branches are protected
+for patch releases and disallow force-push.
+
 The workflow collects changes since the previous official tag, omits `NONE`/`NO`
 entries, and updates `CHANGELOG/CHANGELOG-X.Y.md`. For the first official release,
 backfill old PR metadata or prepare the initial section manually.
